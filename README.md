@@ -1,4 +1,4 @@
-# Your startup name here
+# Chase's Startup
 
 [My Notes](notes.md)
 
