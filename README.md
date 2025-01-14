@@ -1,8 +1,8 @@
-# Chase's Startup
+# Roller Skate Racing
 
 [My Notes](notes.md)
 
-A brief description of the application here. I'm now adding something else, just trying to see if it will work in github as well as on my laptop. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Rollerskate racing is a fun app used to design a rollerskate, view past rollerskates that have been created, and then race your rollerskate against other players. It's a fun app that allows creativity as welll as competition.
 
 
 > [!NOTE]
@@ -18,15 +18,15 @@ A brief description of the application here. I'm now adding something else, just
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
 - [ ] Description of how you will use each technology
 - [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Rollerskate racing is a fun game that allows both creativity and competition. It's all about designing the coolest rollerskates and then using that rollerskate to race against other players. When designing each skate, you can choose the color, type of design, and the color of the laces as well. Then... you RACE. Fastest skate wins!
 
 ### Design
 
@@ -43,20 +43,22 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Secure Login
+- Ability to design a skate and save it to your profile
+- View the skates that were previously made
+- Race your skates against others
+- View the leaderboard for the fastest times
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - HTML Pages for login, landing page, skate design, skate library, and skate racing. 
+- **CSS** - Make it adaptable to all of the different screens
+- **React** - I will use react to allow the user to move between screens
+- **Service** - I will use API's to allow the user to publish scores to a global leaderboard, and maybe one day you can even add friends and see their skates :)
+- **DB/Login** - The user needs an account to see their totally wicked skates! They should login before starting
+- **WebSocket** - This is what will be used to allow the user to see the other skate times
 
 ## 🚀 AWS deliverable
 
