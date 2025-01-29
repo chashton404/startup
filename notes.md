@@ -22,3 +22,24 @@ How to start an HTML File:
 </html>
 
 ```
+
+Major thanks to Professor Jensen for providing the following code snippet of an example document in HTML
+
+```
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <main>
+      <h1>Hello world</h1>
+      <p class="introduction">
+        HTML welcomes you to the amazing world of
+        <span class="topic">web programming</span>.
+      </p>
+      <p class="question">What will this mean to you?</p>
+      <p class="assignment">Learn more <a href="instruction.html">here</a>.</p>
+    </main>
+  </body>
+</html>
+```
+
+note a couple things here, you are going to essentially be starting an element with the <> symbols and putting the name of the element between the two angle brackets. Then you end the element by using the angle brackets again and adding a backslash before the beginning of the element.
