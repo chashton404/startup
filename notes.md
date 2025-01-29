@@ -42,7 +42,7 @@ Major thanks to Professor Jensen for providing the following code snippet of an 
 </html>
 ```
 
-note a couple things here, you are going to essentially be starting an element with the <> symbols and putting the name of the element between the two angle brackets. Then you end the element by using the angle brackets again and adding a backslash before the beginning of the element.
+note a couple things here, you are going to essentially be starting an element with the <> symbols and putting the name of the element between the two angle brackets. Then you end the element by using the angle brackets again and adding a forward slash before the beginning of the element.
 
 **Adding an Image**
 Here is an example of adding an image to your html page
