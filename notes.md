@@ -70,7 +70,7 @@ The following is an example function in javascript
 function join(a, b) {
  return a + ' ' + b;
 }
-'''
+```
 This code can then be executed by entering 
 ```
 console.log(join('Hello', 'world'));
