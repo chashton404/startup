@@ -52,3 +52,15 @@ Here is an example of adding an image to your html page
 ```
 
 ## Javascript Notes
+Some basics - let vs. const:
+When you declare a variable with let, it lets you change the value for the variable. However, when you add const that then makes it so it is a constant so it won't change
+
+```
+let msgx = 'wow'
+msgx = 'fish'
+
+const msgc = 'wow!'
+```
+You can test these things out by opening the console on any page.
+right click -> inspect -> console
+
