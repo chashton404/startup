@@ -50,3 +50,5 @@ Here is an example of adding an image to your html page
 ```
 <img alt="beach" src="https://images.pexels.com/photos/21787/pexels-photo.jpg?w=600&h=300" />
 ```
+
+## Javascript Notes
