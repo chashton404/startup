@@ -64,3 +64,14 @@ const msgc = 'wow!'
 You can test these things out by opening the console on any page.
 right click -> inspect -> console
 
+**Functions**
+The following is an example function in javascript
+```
+function join(a, b) {
+ return a + ' ' + b;
+}
+'''
+This code can then be executed by entering 
+```
+console.log(join('Hello', 'world'));
+```
