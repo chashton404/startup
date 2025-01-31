@@ -1,18 +1,41 @@
 <!-- this is my index.html document to begin my html coding-->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <body>
-        <main>
+        <header>
             <h1>Rollerskate Racing</h1>
+
+        </header>
+        <main>
             <p>
                 Welcome to Rollerskate Racing! A game of creativity and speed. May the fastest skate win!
             </p>
 
             <p>
-                Please login to start
+                Login to begin racing
             </p>
+                <form action="submission.html" method="post">
+                    <div>
+                        <label for="username">Username:</label> 
+                        <input type="text" name="username" placeholder="coolguy123">
+                    </div>
+                    <div>
+                        <label for="password">Password:</label> 
+                        <input type="password" name="password" placeholder="notpassword">
+                    </div>
+                    <div>
+                        <button type="submit">Login</button>
+                    </div>
+                </form>
+                <a href="landingPage.html">Bypass login</a>
         </main>
+        <footer>
+            <p>
+                Made by Chase Ashton
+            </p>
+            <a href="https://github.com/chashton404/startup"> Github </a>
+        </footer>
     </body>
 
 </html>
