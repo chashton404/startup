@@ -89,4 +89,20 @@ function join(a, b) {
 This code can then be executed by entering 
 ```
 console.log(join('Hello', 'world'));
+
 ```
+
+## React Notes
+**JSX** is a mix between Javascript and HTML. Babel can be used to 'transpile' the code into javascript. 
+
+Example:
+```
+//this code is jsx
+const phrase = <p>Hello World</p>;
+//babel transpiles is
+const phrase = React.createElement("p", null, "Hello world");
+//the browser then renders it as
+<p>Hello World</p>
+```
+
+
