@@ -51,7 +51,7 @@ I am going to use the required technologies in the following ways.
 - **HTML** - HTML Pages for login, landing page, skate design, skate library, and skate racing. 
 - **CSS** - Make it adaptable to all of the different screens
 - **React** - I will use react to allow the user to move between screens
-- **Service** - I will use API's to allow the user to publish scores to a global leaderboard, and maybe one day you can even add friends and see their skates :)
+- **Service** - I will use API's to allow the user to publish scores to a global leaderboard, and maybe one day you can even add friends and see their skates
 - **DB/Login** - The user needs an account to see their totally wicked skates! They should login before starting
 - **WebSocket** - This is what will be used to allow the user to see the other skate times
 
@@ -65,15 +65,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - I made 5 HTML pages. The login page, the landing page, and then a page for each of the actions that the user should be able to do. Now there is a place to view their skates, design skates, and race their skates. 
+- [x] **Proper HTML element usage** - I included most of my code inside the body element of my HTML, and then used paragraph, header, div, link, and image elements for the contents
+- [x] **Links** - Links were added between the pages to allow for ease of navigation.
+- [x] **Text** - Text is used to add descriptions to each of the pages, as well as convey important information about the skates themselves.
+- [x] **3rd party API placeholder** - I added a leaderboard where the user is able to see the top skates a times
+- [x] **Images** - I made my own image assets using a design I found on the internet. I used an image of a rollerskate I found and then customized it in Adobe Illustrator and then I made them SVD's to allow for ease of rescalability.
+- [x] **Login placeholder** - There is a place for the user to sign in, but it is not yet functional.
+- [x] **DB data placeholder** - The user then is able to see the skates they have created
+- [x] **WebSocket placeholder** - This is also part of the leaderboard, seeing the times of other skates.
 
 ## 🚀 CSS deliverable
 
