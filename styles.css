@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&family=Rubik+Vinyl&family=Syne:wght@400..800&display=swap');
+
 .skateview-skate-svg {
     width: 50px;
     height: auto;
@@ -7,3 +9,31 @@
     width: 300px;
     height: auto;
   }
+
+body {
+  display:block;
+  background-color: #FEFCF2;
+}
+
+h1 {
+  display: flex 0 80px;
+  font-family: 'Rubik Spray Paint', sans-serif;
+  font-weight: 100;
+  font-size: 64px;
+  letter-spacing: 2px;
+  word-spacing: 20px;
+  color: #F34121;
+  text-align: center;
+  border-bottom: 3px solid #CCC5B9;
+  margin-block-start: 0px;
+}
+
+footer {
+  border-top: 3px solid #CCC5B9;
+  display: flex 0 30px;
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  color: #CCC5B9;
+  text-align: center;
+  line-height: 10px;
+}
