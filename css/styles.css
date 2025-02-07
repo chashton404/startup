@@ -28,6 +28,36 @@ h1 {
   margin-block-start: 0px;
 }
 
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  color: Black;
+  text-align: center;
+  margin-block-start: 0px;
+}
+
+.landing-page-button {
+  font-family: 'Rubik Spray Paint', sans-serif;
+  font-size: 33px;
+  background-color: #3A6EA5;
+  color: #FEFCF2;
+  border-radius: 10px;
+  text-align: left;
+  padding: 30px;
+  text-decoration: none;
+}
+
+.landing-page-button:hover {
+  font-family: 'Rubik Spray Paint', sans-serif;
+  font-size: 33px;
+  background-color: #4b76a5;
+  color: #FEFCF2;
+  border-radius: 10px;
+  text-align: left;
+  padding: 30px;
+  text-decoration: none;
+}
+
 footer {
   border-top: 3px solid #CCC5B9;
   display: flex 0 30px;
