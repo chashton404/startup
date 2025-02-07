@@ -66,6 +66,37 @@ Here is an example of adding an image to your html page
 | `output`   | Output of input                  | `<output for="range">0</output>`               |
 | `meter`    | Display value with a known range | `<meter min="0" max="100" value="50"></meter>` |
 
+## CSS Notes
+CSS is SO COOL you can really improve the look of your designs and take them from zero to hero.
+
+**BOOTSTRAP**
+Bootstrap is a popular CSS framework that can be used for styling and responsive design.
+
+How to import Bootstrap:
+```
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+```
+Put the above code in the the head element of your HTML. 
+
+Using Bootstrap for layout:
+```
+<div class="container">
+  <div class="row">
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
+    </div>
+    <div class="col">
+      Column
+    </div>
+  </div>
+</div>
+```
+The code above creates a container that has one row with three columns.
+getbootstrap.com/docs/ has amazing documentation for their resources.
+
 ## Javascript Notes
 Some basics - let vs. const:
 When you declare a variable with let, it lets you change the value for the variable. However, when you add const that then makes it so it is a constant so it won't change
