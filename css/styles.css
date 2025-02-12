@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik+Spray+Paint&family=Rubik+Vinyl&family=Syne:wght@400..800&display=swap');
 
 .skateview-skate-svg {
-    width: 50px;
-    height: auto;
-  }
+  width: 50px;
+  height: auto;
+}
 
-  .skate-designer-rendering {
-    width: 300px;
-    height: auto;
-  }
+.skate-designer-rendering {
+  width: 300px;
+  height: auto;
+}
 
 body {
   display:block;
@@ -24,15 +24,6 @@ h1 {
   word-spacing: 20px;
   color: #F34121;
   text-align: center;
-  border-bottom: 3px solid #CCC5B9;
-  margin-block-start: 0px;
-}
-
-h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 36px;
-  color: Black;
-  text-align: center;
   margin-block-start: 0px;
 }
 
@@ -47,17 +38,47 @@ h2 {
   text-decoration: none;
 }
 
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  color: Black;
+  text-align: center;
+  margin-block-start: 0px;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 36px;
+  }
+
+  .landing-page-button {
+    font-size: 24px;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+}
+
+
+
+
+
 .landing-page-button:hover {
   background-color: #4b76a5;
   color: #FEFCF2;
 }
 
 footer {
-  border-top: 3px solid #CCC5B9;
   display: flex 0 30px;
   font-family: 'Syne', sans-serif;
-  font-size: 18px;
+  font-size: 24px;
   color: #CCC5B9;
-  text-align: center;
   line-height: 10px;
+}
+
+.divider {
+  border-top: 3px solid #CCC5B9;
+  display: flex 0 30px;
 }
