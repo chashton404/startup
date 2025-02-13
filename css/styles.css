@@ -61,7 +61,36 @@ h2 {
   }
 }
 
+/* Hexcodes for each color: Black:000000 Red:BF1E2D Orange:F1592A Blue:0F75BC Green:2BB673 */
+.selector-button-black {
+  background-color: #000000;
+  border: none;
+  border-radius: 12px;
+}
 
+.selector-button-red {
+  background-color: #BF1E2D;
+  border: none;
+  border-radius: 12px;
+}
+
+.selector-button-orange {
+  background-color: #F1592A;
+  border: none;
+  border-radius: 12px;
+}
+
+.selector-button-blue {
+  background-color: #0F75BC;
+  border: none;
+  border-radius: 12px;
+}
+
+.selector-button-green {
+  background-color: #2BB673;
+  border: none;
+  border-radius: 12px;
+}
 
 
 
