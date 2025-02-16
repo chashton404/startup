@@ -18,53 +18,32 @@
             <div class="divider"></div>
         </header>
         <main>
-            <a href="landingPageBootstrap.html">Back</a>
-            <p>
-                Welcome to the your Rollerskate Garage! Here you can view all of your custom skates.
-            </p>
-
-            <!--Here we have a Div of class "skateview-area" that will eventually be modified so that the skates will be laid out in a grid-->
-            <!--Then we will add a modifier as well to the "skateview-single-skate" to create cards for each of the skates-->
-
-            <div class="skateview-area">
-                <div class="skateview-single-skate">
-                    <div>
-                        <img src="Image_Assets/cool-guy-skate-placeholder.svg" alt="A totally wicked rollerskate" class="skateview-skate-svg"/></td>
-                    </div>
-                    <p>
-                        Cool Guy
-                    </p>
-                    <button>Equip</button>
+            <div class="row d-flex justify-content-center p-3">
+                <div class="col">
+                    <a class="btn signin-button-primary" href="landingPageBootstrap.html">Back</a>
                 </div>
-
-                <div class="skateview-single-skate">
-                    <div>
-                        <img src="Image_Assets/cool-mint-skate-placeholder.svg" alt="Rollerskate with a green theme" class="skateview-skate-svg"/></td>
-                    </div>
-                    <p>
-                        Cool Mint
-                    </p>
-                    <button>Equip</button>
+                <div class="col">
+                    <h2>Welcome to the Skate Garage</h2>
                 </div>
-
-                <div class="skateview-single-skate">
-                    <div>
-                        <img src="Image_Assets/fanta-skate-placeholder.svg" alt="The orange skate" class="skateview-skate-svg"/></td>
+            </div>
+            <div class="row skateview-area">
+                <div class="col-12 col-md-4">
+                    <div class="skateview-single-skate card p-3 mb-3" style="border-radius: 15px;">
+                        <div class="row-md-6">
+                            <img src="Image_Assets/cool-guy-skate-placeholder.svg" alt="A totally wicked rollerskate" class="skateview-skate-svg"/>
+                        </div>
+                        <div class="row-md-3">
+                            <p>
+                                Cool Guy
+                            </p>
+                        </div>
+                        <div class="row">
+                            <button>Equip</button>
+                        </div>
+                        <div class="row">
+                            <button>Delete</button>
+                        </div>
                     </div>
-                    <p>
-                        Fanta Skate
-                    </p>
-                    <button>Equip</button>
-                </div>
-
-                <div class="skateview-single-skate">
-                    <div>
-                        <img src="Image_Assets/fire-and-ice-skate-placeholder.svg" alt="A skate with a red and blue color scheme" class="skateview-skate-svg"/></td>
-                    </div>
-                    <p>
-                        Fire and Ice
-                    </p>
-                    <button>Equip</button>
                 </div>
             </div>
         </main>
