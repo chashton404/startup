@@ -79,12 +79,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+
+- [x] **Header, footer, and main content body** - I became very familiar with Bootstrap header and footer elements and used their examples to construct visually appealing yet concise headers and footers. The Body element
+- [x] **Navigation elements** - I was able to finish working on the screens where the user will be able to design their skates and view their designed skates. You are able to navigate with ease from one thing screen to another and back
+- [x] **Responsive to window resizing** - The app is able to resize and rearrange based on the screen size. This was particularly easy because of the grid system that Bootstrap uses
+- [ ] **Application elements** - As has been mentioned before I designed all of the different pages using the bootstrap elements. Breaking each thing down into it's rows and columns allows for a very organized and orderly layout.
+- [x] **Application text content** - Using CSS I was able to import fonts from google and use those fonts to add style to each page.
+- [x] **Application images** - All of the images used in this project are svg's to allow for ease of resizability and to take up less storage. Effects were applied to present the images in an organized manner.
 
 ## 🚀 React part 1: Routing deliverable
 
