@@ -104,6 +104,21 @@ h1 {
   color: #FEFCF2;
 }
 
+.button-not-available {
+  font-family: 'Rubik Spray Paint', sans-serif;
+  font-size: 36px;
+  background-color: #d3d3d3;
+  color: black;
+  border-radius: 20px;
+  text-align: left;
+  padding: 30px;
+  text-decoration: none;
+}
+
+.button-not-available:hover {
+  color: black;
+}
+
 h2 {
   font-family: 'Syne', sans-serif;
   font-size: 36px;
