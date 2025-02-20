@@ -130,10 +130,49 @@ Example:
 ```
 //this code is jsx
 const phrase = <p>Hello World</p>;
-//babel transpiles is
+//babel transpiles as
 const phrase = React.createElement("p", null, "Hello world");
 //the browser then renders it as
 <p>Hello World</p>
 ```
 
+## Javascript
+**promises** 
+Promises essentially allow us to run another function at the same time as other code.
+We have for an example this block of code:
+```
+function callback(resolve) {
+  setTimeout(() => {
+    resolve('done');
+  }, 5000);
+}
+
+const p = new Promise(callback);
+
+p.then((result) => console.log(result));
+console.log('end')
+```
+This code demonstrates what a promise can do. We created a function using the promise constructor because the parameter is resolve. Inside this function we set a times for 5 seconds to then print 'done'. The actual code itself begins running the promise. It then prints 'end'. 5 seconds later it prints 'done'.
+Promises have three states:
+Pending - Currently running Asynchronously
+Fulfilled - Completed Successfully
+Rejected - Failed to complete
+
+IN REALITY the promise function should use a resolve and reject function. Consider the following function:
+```
+const coinToss = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (Math.random() > 0.1) {
+      resolve(Math.random() > 0.5 ? 'heads' : 'tails');
+    } else {
+      reject('fell off table');
+    }
+  }, 3000);
+});
+
+coinToss
+  .then((result) => console.log(`Toss result: ${result}`))
+  .catch((err) => console.error(`Error: ${err}`))
+ .finally(() => console.log('Toss completed'));
+ ```
 
