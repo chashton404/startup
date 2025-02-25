@@ -8,17 +8,9 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chashton404/startup.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chashton404/startup/issues"
-  },
-  "homepage": "https://github.com/chashton404/startup#readme",
   "devDependencies": {
     "vite": "^6.2.0"
   }

@@ -151,8 +151,9 @@ We then add commands for vite in the scripts by editing the package.json and we 
     "preview": "vite preview"
   }
 ```
+We also delete only keep the Main, version, descripion, main, scripts, keywords, author, license, dev dependencies, and dependencies the rest can be deleted.
 
-2. Reorganize the code
+2. Reorganize the code - The code then needs to be organized into the files that vite organizes. This is done by putting most files in either the public or src directory.
 3. Convert to React Bootstrap
 4. Enable React
 5. Create app component
