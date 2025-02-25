@@ -136,6 +136,18 @@ const phrase = React.createElement("p", null, "Hello world");
 <p>Hello World</p>
 ```
 
+**Porting to React**
+Porting to react is an important process. Here are the steps we take:
+1. Install and configure Vite - 
+2. Reorganize the code
+3. Convert to React Bootstrap
+4. Enable React
+5. Create app component
+6. Create view components
+7. Create the router
+8. Convert HTML to React components
+9. Replace deployment script
+
 ## Javascript
 **promises** 
 Promises essentially allow us to run another function at the same time as other code.
