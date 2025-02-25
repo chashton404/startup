@@ -138,7 +138,20 @@ const phrase = React.createElement("p", null, "Hello world");
 
 **Porting to React**
 Porting to react is an important process. Here are the steps we take:
-1. Install and configure Vite - 
+1. Install and configure Vite - do this by setting up NPM for our project and we install Vite as a dependency by running these commands in the terminal:
+```
+npm init -y
+npm install vite@latest -D
+```
+We then add commands for vite in the scripts by editing the package.json and we add the following script
+```
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  }
+```
+
 2. Reorganize the code
 3. Convert to React Bootstrap
 4. Enable React
