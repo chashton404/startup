@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Login() {
     return (
-        <main className="d-flex justify-content-center align-items-center vh-100">
+        <main className="d-flex justify-content-center align-items-center" style={{ height: 'calc(100vh - 200px)'}}>
             <form action="landingPageBootstrap.html" className="text-center" style={{ width: '33%' }}>
                 <h2 style={{ textAlign: 'center' }}>Please sign in to begin racing</h2>
                 <div>
