@@ -1,4 +1,5 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
 export function LandingPage() {
@@ -15,12 +16,12 @@ return (
                             <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <a href="skateView.html" className="landing-page-button">VIEW SKATES</a>
+                            <NavLink to="/skateView" className="landing-page-button">VIEW SKATES</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <a href="landingPageBootstrap.html" className="button-not-available">
+                            <NavLink to="/landing" className="button-not-available">
                                 RACE <span style={{ fontFamily: "'Syne', Sans-serif" }}>(Coming Soon)</span>
-                            </a>
+                            </NavLink>
                         </div>
                     </div>
                 </div>

@@ -144,6 +144,11 @@ h3 {
     padding: 20px;
   }
 
+  .button-not-available {
+    font-size: 24px;
+    padding: 20px;  
+  }
+
   h2 {
     font-size: 24px;
   }

@@ -20,7 +20,7 @@ function SkateDesignCanceled() {
 
 export function SkateDesign() {
   return (
-    <main style={{ height: 'calc(100vh - 200px)'}}>
+    <main>
         <div className="container">
             <div className="row pt-5">
                 <div className="col-md-6 justify-content-center">
