@@ -1,8 +1,9 @@
 import React from 'react';
+import { NavLink } from "react-router-dom";
 
 export function LandingPage() {
 return (
-    <main>
+    <main style={{ height: 'calc(100vh - 200px)' }}>
         <div className="container mt-4">
             <div className="row">
                 <div className="col-md-6">
@@ -11,7 +12,7 @@ return (
                             <h2>Welcome, User!</h2>
                         </div>
                         <div className="row w-100 mb-3">
-                            <a href="skateDesign.html" className="landing-page-button">DESIGN SKATE</a>
+                            <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
                             <a href="skateView.html" className="landing-page-button">VIEW SKATES</a>
