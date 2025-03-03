@@ -232,7 +232,7 @@ export function SkateDesign() {
                     </div>
                 </div>
                 <div className="col-md-6 d-flex justify-content-center align-items-center pt-5">
-                    <div style="border: 2px solid black; background-color: white; border-radius: 15px; padding: 20px;">
+                    <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px"}}>
                         <img src="public/skate-placeholders/ninja-skate.svg" alt="live rendering of the options selected" className="skate-designer-rendering"/>
                     </div>
                 </div>
