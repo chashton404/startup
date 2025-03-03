@@ -1,8 +1,26 @@
 import React from 'react';
+import { useNavigate, NavLink } from 'react-router-dom';
+
+function SkateDesigned() {
+    const navigate = useNavigate();
+
+    const handleSubmit = (event) => {
+        navigate("/skateView"); // Navigates to the Skate View page
+    }
+}
+
+function SkateDesignCanceled() {
+    const navigate = useNavigate();
+
+    const handleSubmit = (event) => {
+        navigate("/landing"); // Navigates to the landing page
+    }   
+}
+
 
 export function SkateDesign() {
   return (
-    <main>
+    <main style={{ height: 'calc(100vh - 200px)'}}>
         <div className="container">
             <div className="row pt-5">
                 <div className="col-md-6 justify-content-center">
@@ -238,8 +256,8 @@ export function SkateDesign() {
                 </div>
             </div>
             <div className="row d-flex justify-content-center pt-5">
-                <a href="landingPageBootstrap.html" className="btn signin-button-secondary">Cancel</a>
-                <a href="skateView.html" className="btn signin-button-primary">Add to Skate Garage</a>
+                <NavLink to="/landing" className="btn signin-button-secondary">Cancel</NavLink>
+                <NavLink to="/skateView" className="btn signin-button-primary">Add to Skate Garage</NavLink>
             </div>
         </div>
     </main>

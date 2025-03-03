@@ -1,11 +1,13 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
+import { NavLink } from "react-router-dom";
 
 export function SkateView() {
 return (
     <main style={{ display: 'block' }}>
         <div className="row-md-2 justify-content-center p-3">
             <div className="col">
-                <a className="btn signin-button-primary" href="landingPageBootstrap.html">Back</a>
+                <NavLink to="/landing" className="btn signin-button-primary">Back</NavLink>
             </div>
             <div className="col">
                 <h2 style={{ textAlign: 'center' }}>Welcome to the Skate Garage</h2>
