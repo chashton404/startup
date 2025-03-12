@@ -19,37 +19,40 @@ return (
                             <NavLink to="/skateView" className="landing-page-button">VIEW SKATES</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <NavLink to="/landing" className="button-not-available">
-                                RACE <span style={{ fontFamily: "'Syne', Sans-serif" }}>(Coming Soon)</span>
+                            <NavLink to="/skateClicker" className="button-not-available">
+                                Skate Clicker <span style={{ fontFamily: "'Syne', Sans-serif" }}>(Coming Soon)</span>
                             </NavLink>
+                        </div>
+                        <div className="row w-100 mb-3">
+                            <NavLink to="/about" className="landing-page-button">ABOUT</NavLink>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="container">
                         <div className="row w-100 mb-3">
-                            <h2 className="text-center">TOP SKATES</h2>
+                            <h2 className="text-center">TOP SKATERS</h2>
                         </div>
                         <div className="row w-100">
                             <table className="table">
                                 <thead>
                                     <tr>
                                         <th>User</th>
-                                        <th>Time</th>
+                                        <th>Clicks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>Chase</td>
-                                        <td>1:30</td>
+                                        <td>204</td>
                                     </tr>
                                     <tr>
                                         <td>Jeff</td>
-                                        <td>1:45</td>
+                                        <td>199</td>
                                     </tr>
                                     <tr>
                                         <td>Casey</td>
-                                        <td>2:00</td>
+                                        <td>189</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -8,6 +8,8 @@ import { Login } from './login/login';
 import { LandingPage } from './landing/landing';
 import { SkateView } from './view/skateView';
 import { SkateDesign } from './design/skateDesign';
+import { AboutPage } from './about/about';
+import { SkateClicker } from './clicker/skateClicker';
 
 export default function App() {
   return (
@@ -30,6 +32,8 @@ export default function App() {
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/skateView" element={<SkateView />} />
             <Route path="/skateDesign" element={<SkateDesign />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/skateClicker" element={<SkateClicker />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
