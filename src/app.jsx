@@ -29,6 +29,7 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/skateView" element={<SkateView />} />
             <Route path="/skateDesign" element={<SkateDesign />} />

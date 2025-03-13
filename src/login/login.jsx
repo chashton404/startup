@@ -10,6 +10,18 @@ function MyForm() {
 }
 
 export function Login() {
+    const [username, setUsername] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    function handleUsernameChange(event) {
+        setUsername(event.target.value);
+    }
+
+    function handlePasswordChange(event) {
+        setPassword(event.target.value);
+    }
+
+
     return (
         <main className="d-flex justify-content-center align-items-center" style={{ height: 'calc(100vh - 200px)'}}>
             <form action="/landing" className="text-center" style={{ width: '33%' }}>
@@ -20,6 +32,7 @@ export function Login() {
                         className="form-control"
                         id="floatingInput"
                         placeholder="Username"
+                        onChange={handleUsernameChange}
                         style={{
                             marginBottom: '-1px',
                             borderBottomRightRadius: 0,
@@ -35,6 +48,7 @@ export function Login() {
                         className="form-control"
                         id="floatingPassword"
                         placeholder="Password"
+                        onChange={handlePasswordChange}
                         style={{
                             marginBottom: '10px',
                             borderTopLeftRadius: 0,
@@ -56,6 +70,8 @@ export function Login() {
                         </button>
                     </div>
                 </div>
+                <div>{username}</div>
+                <div>{password}</div>
             </form>
         </main>
     );

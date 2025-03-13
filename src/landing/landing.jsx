@@ -57,6 +57,7 @@ return (
                                 </tbody>
                             </table>
                         </div>
+                        <NavLink to="/login" className="back-button" style={{fontFamily: 'Syne'}}>Back to Login</NavLink>
                     </div>
                 </div>
             </div>
