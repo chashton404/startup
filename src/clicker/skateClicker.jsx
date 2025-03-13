@@ -2,11 +2,16 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 ;
 
-function skateClicked() {
-    console.log("Skate Clicked!");
-}
-
 export function SkateClicker() {
+
+    const [count, setCount] = React.useState(parseInt(localStorage.getItem('count')) || 0);
+    
+    function skateClicked() {
+        setCount(count + 1);
+        localStorage.setItem('count', count + 1)
+    }
+
+
     return (
         <main style={{ height: 'calc(100vh - 200px)' }}>
             <div className="container">
@@ -25,7 +30,7 @@ export function SkateClicker() {
                 </div>
                 <div className="row w-100 mb-3">
                     <h1>Clicks:</h1>
-                    <h1>0</h1>
+                    <h1 style={{fontFamily: 'Syne'}}>{count}</h1>
                 </div>
             </div>
         </main>
