@@ -9,16 +9,21 @@ function MyForm() {
     };
 }
 
-export function Login() {
-    const [username, setUsername] = React.useState('');
+export function Login({setUsername}) {
+    const [usernameLocal, setUsernameLocal] = React.useState('');
     const [password, setPassword] = React.useState('');
 
     function handleUsernameChange(event) {
-        setUsername(event.target.value);
+        setUsernameLocal(event.target.value);
     }
 
     function handlePasswordChange(event) {
         setPassword(event.target.value);
+    }
+
+    function loginUser() {
+        localStorage.setItem('username', usernameLocal);
+        setUsername(usernameLocal);
     }
 
 
@@ -60,7 +65,7 @@ export function Login() {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <button type="submit" className="btn signin-button-primary" style={{ width: '100%' }}>
+                        <button type="submit" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }}>
                             Login
                         </button>
                     </div>
@@ -70,7 +75,7 @@ export function Login() {
                         </button>
                     </div>
                 </div>
-                <div>{username}</div>
+                <div>{usernameLocal}</div>
                 <div>{password}</div>
             </form>
         </main>

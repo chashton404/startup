@@ -2,7 +2,7 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
-export function LandingPage() {
+export function LandingPage({username}) {
 return (
     <main style={{ height: 'calc(100vh - 200px)', position: 'relative'}}>
         <NavLink to="/login" className="position-absolute top-0 end-0 mt-3 me-3"
@@ -12,7 +12,7 @@ return (
                 <div className="col-md-6">
                     <div className="container">
                         <div className="row w-100 pb-3">
-                            <h2>Welcome, User!</h2>
+                            <h2>Welcome, {username}!</h2>
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
