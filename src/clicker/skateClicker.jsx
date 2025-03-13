@@ -1,5 +1,10 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
+;
+
+function skateClicked() {
+    console.log("Skate Clicked!");
+}
 
 export function SkateClicker() {
     return (
@@ -13,13 +18,14 @@ export function SkateClicker() {
                         <h2>Click the Skate to increase your score and become the top skater!</h2>
                     </div>  
                 </div>
-                <div className="row w-100 p-3">
-                    <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px"}}>
+                <div onClick={skateClicked}  className="row w-100 p-3 align-items-center justify-content-center">
+                    <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px", width: "350px"}}>
                         <img src="public/skate-placeholders/ninja-skate.svg" alt="live rendering of the options selected" className="skate-designer-rendering"/>
                     </div>
                 </div>
                 <div className="row w-100 mb-3">
-                    <p>Your score: 0</p>
+                    <h1>Clicks:</h1>
+                    <h1>0</h1>
                 </div>
             </div>
         </main>
