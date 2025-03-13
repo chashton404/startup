@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
+import {RollerSkate} from './RollerSkate';
 
 function SkateDesigned() {
     const navigate = useNavigate();
@@ -18,7 +19,28 @@ function SkateDesignCanceled() {
 }
 
 
+
+
 export function SkateDesign() {
+    const [topColor, setTopColor] = React.useState('black');
+    const [stripeColor, setStripeColor] = React.useState('black');
+    const [baseColor, setBaseColor] = React.useState('black');
+    const [wheelColor, setWheelColor] = React.useState('black');
+    const [toeStopColor, setToeStopColor] = React.useState('black');
+
+    const handleColorChange = (event, setColor) => {
+        setColor(event.target.value);
+    }
+
+    const colorOptions = [
+        { color: '#231f20', className: 'selector-button-black' },
+        { color: '#BF1E2D', className: 'selector-button-red' },
+        { color: '#F1592A', className: 'selector-button-orange' },
+        { color: '#0F75BC', className: 'selector-button-blue' },
+        { color: '#2BB673', className: 'selector-button-green' },
+      ];
+
+
   return (
     <main>
         <div className="container">
@@ -38,41 +60,15 @@ export function SkateDesign() {
                             </h3>
                         </div>
                         <div className="row-md-6 d-flex justify-content-center">
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-black">
+                            {colorOptions.map((option, index) => (
+                            <div key={index} className="col d-flex justify-content-center">
+                                <button onClick={() => setTopColor(option.color)} className={option.className}>
                                     <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#000000" />
+                                        <rect width="50" height="25" x="0" y="0" fill={option.color} />
                                     </svg>
                                 </button>
                             </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-red">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#BF1E2D" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-orange">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#F1592A" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-blue">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#0F75BC" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-green">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#2BB673" />
-                                    </svg>
-                                </button>
-                            </div>
+                        ))}
                         </div>
                     </div>
                     <div className="row-md-2">
@@ -82,84 +78,33 @@ export function SkateDesign() {
                             </h3>
                         </div>
                         <div className="row-md-6 d-flex justify-content-center">
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-black">
+                            {colorOptions.map((option, index) => (
+                            <div key={index} className="col d-flex justify-content-center">
+                                <button onClick={() => setStripeColor(option.color)} className={option.className}>
                                     <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#000000" />
+                                        <rect width="50" height="25" x="0" y="0" fill={option.color} />
                                     </svg>
                                 </button>
                             </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-red">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#BF1E2D" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-orange">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#F1592A" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-blue">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#0F75BC"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-green">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#2BB673" />
-                                    </svg>
-                                </button>
-                            </div>
+                        ))}
                         </div>
-                    </div><div className="row-md-2">
+                    </div>
+                    <div className="row-md-2">
                         <div className="row-md-6">
                             <h3>
                                 Base
                             </h3>
                         </div>
                         <div className="row-md-6 d-flex justify-content-center">
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-black">
+                            {colorOptions.map((option, index) => (
+                            <div key={index} className="col d-flex justify-content-center">
+                                <button onClick={() => setBaseColor(option.color)} className={option.className}>
                                     <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#000000" />
+                                        <rect width="50" height="25" x="0" y="0" fill={option.color} />
                                     </svg>
                                 </button>
                             </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-red">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#BF1E2D" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-orange">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#F1592A" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-blue">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#0F75BC" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-green">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#2BB673" />
-                                    </svg>
-                                </button>
-                            </div>
+                        ))}
                         </div>
                     </div><div className="row-md-2">
                         <div className="row-md-6">
@@ -168,41 +113,15 @@ export function SkateDesign() {
                             </h3>
                         </div>
                         <div className="row-md-6 d-flex justify-content-center">
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-black">
+                            {colorOptions.map((option, index) => (
+                            <div key={index} className="col d-flex justify-content-center">
+                                <button onClick={() => setWheelColor(option.color)} className={option.className}>
                                     <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#000000" />
+                                        <rect width="50" height="25" x="0" y="0" fill={option.color} />
                                     </svg>
                                 </button>
                             </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-red">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#BF1E2D" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-orange">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#F1592A" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-blue">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#0F75BC"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-green">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#2BB673" />
-                                    </svg>
-                                </button>
-                            </div>
+                        ))}
                         </div>
                     </div><div className="row-md-2">
                         <div className="row-md-6">
@@ -211,47 +130,27 @@ export function SkateDesign() {
                             </h3>
                         </div>
                         <div className="row-md-6 d-flex justify-content-center">
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-black">
+                            {colorOptions.map((option, index) => (
+                            <div key={index} className="col d-flex justify-content-center">
+                                <button onClick={() => setToeStopColor(option.color)} className={option.className}>
                                     <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#000000" />
+                                        <rect width="50" height="25" x="0" y="0" fill={option.color} />
                                     </svg>
                                 </button>
                             </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-red">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#BF1E2D" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-orange">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#F1592A" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-blue">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#0F75BC"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="col d-flex justify-content-center">
-                                <button className="selector-button-green">
-                                    <svg width="50" height="25" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="50" height="25" x="10" y="10" fill="#2BB673" />
-                                    </svg>
-                                </button>
-                            </div>
+                        ))}
                         </div>
                     </div>
                 </div>
                 <div className="col-md-6 d-flex justify-content-center align-items-center pt-5">
                     <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px"}}>
-                        <img src="public/skate-placeholders/ninja-skate.svg" alt="live rendering of the options selected" className="skate-designer-rendering"/>
+                        <RollerSkate
+                            topColor={topColor}
+                            stripeColor={stripeColor}
+                            baseColor={baseColor}
+                            wheelColor={wheelColor}
+                            toeStopColor={toeStopColor}
+                        />
                     </div>
                 </div>
             </div>
