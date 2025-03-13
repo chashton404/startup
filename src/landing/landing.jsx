@@ -4,7 +4,9 @@ import { NavLink } from "react-router-dom";
 
 export function LandingPage() {
 return (
-    <main style={{ height: 'calc(100vh - 200px)' }}>
+    <main style={{ height: 'calc(100vh - 200px)', position: 'relative'}}>
+        <NavLink to="/login" className="position-absolute top-0 end-0 mt-3 me-3"
+        style={{ fontFamily: 'Syne', zIndex: 1 }}>Logout</NavLink>
         <div className="container mt-4">
             <div className="row">
                 <div className="col-md-6">
@@ -57,7 +59,6 @@ return (
                                 </tbody>
                             </table>
                         </div>
-                        <NavLink to="/login" className="back-button" style={{fontFamily: 'Syne'}}>Back to Login</NavLink>
                     </div>
                 </div>
             </div>
