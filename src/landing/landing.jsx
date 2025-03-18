@@ -3,6 +3,24 @@ import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
 export function LandingPage({username}) {
+
+    const [scores, setScores] = React.useState([]); //we'll use this to store the top scores
+
+    const leaderBoard = [];
+    if (scores.length) {
+        for (const [i, score] of scores.entries()) {
+          leaderBoard.push(
+            <tr key={i}>
+            </tr>
+          );
+        }
+      } else {
+        leaderBoard.push(
+          <tr key='0'>
+            <td colSpan='4'>Be the first to score!</td>
+          </tr>
+        );
+    }
 return (
     <main style={{ height: 'calc(100vh - 200px)', position: 'relative'}}>
         <NavLink to="/login" className="position-absolute top-0 end-0 mt-3 me-3"
@@ -44,18 +62,7 @@ return (
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Chase</td>
-                                        <td>204</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jeff</td>
-                                        <td>199</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Casey</td>
-                                        <td>189</td>
-                                    </tr>
+                                    {leaderBoard}
                                 </tbody>
                             </table>
                         </div>
