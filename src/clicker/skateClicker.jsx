@@ -4,7 +4,24 @@ import { NavLink } from "react-router-dom";
 
 export function SkateClicker({scores, setScores}) {
 
-    const [count, setCount] = React.useState(parseInt(localStorage.getItem('count')) || 0);
+    // Declare the click state variable and the username
+    const [count, setCount] = React.useState(0);
+    const user = localStorage.getItem('username');
+
+    // Find if user already exists
+    React.useEffect(() => {     
+        let existingUserIndex = scores.findIndex((score) => score.name === user)
+
+        if (existingUserIndex !== -1) {
+            // Existing user: set count to their stored score
+            setCount(scores[existingUserIndex].clicks);
+            localStorage.setItem('count', scores[existingUserIndex].clicks);
+        } else {
+            // New user: set count to 0
+            setCount(0);
+            localStorage.setItem('count', 0);
+        }
+    }, [user]);
     
     function skateClicked() {
         setCount(count + 1);
@@ -18,28 +35,29 @@ export function SkateClicker({scores, setScores}) {
     }
 
     async function updateScoresLocal(newScore) {
+        // Find if user already exists
+        let existingUserIndex = scores.findIndex((score) => score.name === user);
+
         // Get current scores from localStorage
-        let scores = [];
+        let localScores = [];
         const scoresText = localStorage.getItem('scores');
         
         if (scoresText) {
-            scores = JSON.parse(scoresText);
+            localScores = JSON.parse(scoresText);
         }
-    
-        // Find if user already exists
-        let existingUserIndex = scores.findIndex((score) => score.name === newScore.name);
+
     
         if (existingUserIndex !== -1) {
             // Update existing user's score if new score is higher
             if (newScore.clicks > scores[existingUserIndex].clicks) {
-                scores[existingUserIndex] = newScore;
+                localScores[existingUserIndex] = newScore;
             }
         } else {
             // Add new user
-            scores.push(newScore);
+            localScores.push(newScore);
         }
 
-        scores.sort((a, b) => b.clicks - a.clicks);
+        localScores.sort((a, b) => b.clicks - a.clicks);
         if (scores.length > 10) {
             scores.length = 10;
         }
@@ -48,7 +66,7 @@ export function SkateClicker({scores, setScores}) {
         localStorage.setItem('scores', JSON.stringify(scores));
         
         // Update state with the new scores array
-        setScores([...scores]); // Create a new array to ensure React detects the change
+        setScores([...localScores]); // Create a new array to ensure React detects the change
     }
 
 

@@ -18,7 +18,7 @@ export function LandingPage({username, scores, setScores}) {
             <tr key={i}>
                 <td>{i+1}</td>
                 <td>{score.name}</td>
-                <td>{score.clicks + 1}</td>
+                <td>{score.clicks}</td>
             </tr>
           );
         }
