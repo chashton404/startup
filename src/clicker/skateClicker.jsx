@@ -2,13 +2,53 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 ;
 
-export function SkateClicker() {
+export function SkateClicker({scores, setScores}) {
 
     const [count, setCount] = React.useState(parseInt(localStorage.getItem('count')) || 0);
     
     function skateClicked() {
         setCount(count + 1);
         localStorage.setItem('count', count + 1)
+        saveScore();
+    }
+
+    async function saveScore() {
+        const newScore = {name: localStorage.getItem('username'), clicks: count};
+        updateScoresLocal(newScore)
+    }
+
+    async function updateScoresLocal(newScore) {
+        // Get current scores from localStorage
+        let scores = [];
+        const scoresText = localStorage.getItem('scores');
+        
+        if (scoresText) {
+            scores = JSON.parse(scoresText);
+        }
+    
+        // Find if user already exists
+        let existingUserIndex = scores.findIndex((score) => score.name === newScore.name);
+    
+        if (existingUserIndex !== -1) {
+            // Update existing user's score if new score is higher
+            if (newScore.clicks > scores[existingUserIndex].clicks) {
+                scores[existingUserIndex] = newScore;
+            }
+        } else {
+            // Add new user
+            scores.push(newScore);
+        }
+
+        scores.sort((a, b) => b.clicks - a.clicks);
+        if (scores.length > 10) {
+            scores.length = 10;
+        }
+    
+        // Always update localStorage
+        localStorage.setItem('scores', JSON.stringify(scores));
+        
+        // Update state with the new scores array
+        setScores([...scores]); // Create a new array to ensure React detects the change
     }
 
 
