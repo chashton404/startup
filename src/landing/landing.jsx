@@ -2,15 +2,23 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
-export function LandingPage({username}) {
+export function LandingPage({username, scores, setScores}) {
 
-    const [scores, setScores] = React.useState([]); //we'll use this to store the top scores
+    React.useEffect(() => {
+        const scoresText = localStorage.getItem('scores');
+        if (scoresText) {
+          setScores(JSON.parse(scoresText));
+        }[]
+      }, []);
 
     const leaderBoard = [];
     if (scores.length) {
         for (const [i, score] of scores.entries()) {
           leaderBoard.push(
             <tr key={i}>
+                <td>{i+1}</td>
+                <td>{score.name}</td>
+                <td>{score.clicks + 1}</td>
             </tr>
           );
         }
@@ -57,7 +65,8 @@ return (
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th>User</th>
+                                        <th>Rank</th>
+                                        <th>Skater</th>
                                         <th>Clicks</th>
                                     </tr>
                                 </thead>
