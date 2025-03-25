@@ -1,6 +1,20 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
+import { RollerSkate } from './rollerskate';
+
+
+const skates = [
+    { skateName: 'one', skateStatus: 'equipped'},
+    { skateName: 'two', skateStatus: 'not equipped'},
+    { skateName: 'three', skateStatus: 'not equipped'}
+];
+
+const equippedSkateIndex = 0;
+
+function equipSkate(skateName) {
+    console.log('equipSkate called on ' + skateName);
+}
 
 export function SkateView() {
 return (
@@ -13,39 +27,21 @@ return (
                 <h2 style={{ textAlign: 'center' }}>Welcome to the Skate Garage</h2>
             </div>
         </div>
-        <div className="row justify-content-center p-3">
-            <div className="col-6 col-md-3 p-3">
-                <div className="card p-3">
-                    <img src="public/skate-placeholders/cool-guy-skate-placeholder.svg" alt="Skate Image" className="img-fluid" />
-                    <h3>Cool Guy</h3>
-                    <button className="btn signin-button-primary mb-2">Equip</button>
-                    <button className="btn signin-button-secondary">Delete</button>
+        <div className="row justify-content-start p-3">
+            {skates.map((skate, index) => (
+                <div key={index} className="col-6 col-md-3 p-3">
+                    <div className="card p-3">
+                        <img src="public/skate-placeholders/cool-mint-skate-placeholder.svg" alt="Skate Image" className="img-fluid" />
+                        <h3>{skate.skateName}</h3>
+                        {skate.skateStatus === 'equipped' ? (
+                            <button className="btn signin-button-secondary" disabled>Equipped</button>
+                        ) : (
+                            <button className="btn signin-button-primary" onClick={() => equipSkate(skate.skateName)}>Equip</button>
+                        )}
+                        <button className="btn signin-button-secondary">Delete</button>
+                    </div> 
                 </div>
-            </div>
-            <div className="col-6 col-md-3 p-3">
-                <div className="card p-3">
-                    <img src="public/skate-placeholders/cool-mint-skate-placeholder.svg" alt="Skate Image" className="img-fluid" />
-                    <h3>Cool Mint</h3>
-                    <button className="btn signin-button-primary mb-2">Equip</button>
-                    <button className="btn signin-button-secondary">Delete</button>
-                </div>
-            </div>
-            <div className="col-6 col-md-3 p-3">
-                <div className="card p-3">
-                    <img src="public/skate-placeholders/fanta-skate-placeholder.svg" alt="Skate Image" className="img-fluid" />
-                    <h3>Fanta</h3>
-                    <button className="btn signin-button-primary mb-2">Equip</button>
-                    <button className="btn signin-button-secondary">Delete</button>
-                </div>
-            </div>
-            <div className="col-6 col-md-3 p-3">
-                <div className="card p-3">
-                    <img src="public/skate-placeholders/fire-and-ice-skate-placeholder.svg" alt="Skate Image" className="img-fluid" />
-                    <h3>Fire and Ice</h3>
-                    <button className="btn signin-button-primary mb-2">Equip</button>
-                    <button className="btn signin-button-secondary">Delete</button>
-                </div>
-            </div>
+            ))}
         </div>
     </main>
 );
