@@ -75,8 +75,6 @@ export function Login({setUsername}) {
                         </button>
                     </div>
                 </div>
-                <div>{usernameLocal}</div>
-                <div>{password}</div>
             </form>
         </main>
     );

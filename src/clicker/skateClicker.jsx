@@ -24,13 +24,14 @@ export function SkateClicker({scores, setScores}) {
     }, [user]);
     
     function skateClicked() {
-        setCount(count + 1);
-        localStorage.setItem('count', count + 1)
-        saveScore();
+        let temporaryCount = count + 1;
+        setCount(temporaryCount);
+        localStorage.setItem('count', temporaryCount)
+        saveScore(temporaryCount);
     }
 
-    async function saveScore() {
-        const newScore = {name: localStorage.getItem('username'), clicks: count};
+    async function saveScore(temporaryCount) {
+        const newScore = {name: localStorage.getItem('username'), clicks: temporaryCount};
         updateScoresLocal(newScore)
     }
 
@@ -58,12 +59,12 @@ export function SkateClicker({scores, setScores}) {
         }
 
         localScores.sort((a, b) => b.clicks - a.clicks);
-        if (scores.length > 10) {
-            scores.length = 10;
+        if (localScores.length > 10) {
+            localScores.length = 10;
         }
     
         // Always update localStorage
-        localStorage.setItem('scores', JSON.stringify(scores));
+        localStorage.setItem('scores', JSON.stringify(localScores));
         
         // Update state with the new scores array
         setScores([...localScores]); // Create a new array to ensure React detects the change
