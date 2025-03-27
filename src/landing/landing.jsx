@@ -2,18 +2,18 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
-export function LandingPage({username, scores, setScores}) {
+export function LandingPage({username, accountData, setAccountData}) {
 
     React.useEffect(() => {
-        const scoresText = localStorage.getItem('scores');
+        const scoresText = localStorage.getItem('accountData');
         if (scoresText) {
           setScores(JSON.parse(scoresText));
         }[]
       }, []);
 
     const leaderBoard = [];
-    if (scores.length) {
-        for (const [i, score] of scores.entries()) {
+    if (accountData.length) {
+        for (const [i, score] of accountData.entries()) {
           leaderBoard.push(
             <tr key={i}>
                 <td>{i+1}</td>

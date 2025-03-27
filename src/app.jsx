@@ -13,7 +13,7 @@ import { SkateClicker } from './clicker/skateClicker';
 
 export default function App() {
   const [username, setUsername] = React.useState(localStorage.getItem('username' || null));
-  const [scores, setScores] = React.useState([]);
+  const [accountData, setAccountData] = React.useState([]);
 
   return (
     <BrowserRouter>
@@ -33,11 +33,11 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Login setUsername={setUsername} />} />
             <Route path="/login" element={<Login setUsername={setUsername} />} />
-            <Route path="/landing" element={<LandingPage username={username} scores={scores} setScores={setScores}/>} />
+            <Route path="/landing" element={<LandingPage username={username} accountData={accountData} setAccountData={setAccountData}/>} />
             <Route path="/skateView" element={<SkateView />} />
-            <Route path="/skateDesign" element={<SkateDesign />} />
+            <Route path="/skateDesign" element={<SkateDesign accountData={accountData} setAccountData={setAccountData}/>} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/skateClicker" element={<SkateClicker scores={scores} setScores={setScores}/>} />
+            <Route path="/skateClicker" element={<SkateClicker accountData={accountData} setAccountData={setAccountData}/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
