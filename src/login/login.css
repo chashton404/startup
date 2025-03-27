@@ -1,0 +1,49 @@
+.form-signin {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+.signin-button-primary {
+  background-color: #3A6EA5;
+  color: #FEFCF2;
+  font-family: 'syne', sans-serif;
+}
+
+.signin-button-secondary {
+  background-color: #dbdbdb;
+  color: black;
+  font-family: 'syne', sans-serif;
+}
+
+.signin-button-primary:hover {
+  background-color: #4b76a5;
+  color: #FEFCF2
+}
+
+.signin-button-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.signin-button-primary:disabled {
+    background-color: #3A6EA5;
+    color: #FEFCF2;
+    font-family: 'syne', sans-serif;
+}
+
+.signin-button-secondary:disabled {
+    background-color: #dbdbdb;
+    color: black;
+    font-family: 'syne', sans-serif;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
