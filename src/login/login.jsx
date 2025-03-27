@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./login.css";
 
 function MyForm() {
     const navigate = useNavigate();
@@ -65,12 +66,12 @@ export function Login({setUsername}) {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <button type="submit" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }}>
+                        <button type="submit" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
                             Login
                         </button>
                     </div>
                     <div className="col-md-6">
-                        <button type="submit" className="btn signin-button-secondary" style={{ width: '100%' }}>
+                        <button type="submit" className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
                             Create Account
                         </button>
                     </div>
