@@ -64,7 +64,7 @@ export function SkateClicker({accountData, setAccountData}) {
         }
     
         // Always update localStorage
-        localStorage.setItem('userData', JSON.stringify(localScores));
+        localStorage.setItem('accountData', JSON.stringify(localScores));
         
         // Update state with the new scores array
         setAccountData([...localScores]); // Create a new array to ensure React detects the change

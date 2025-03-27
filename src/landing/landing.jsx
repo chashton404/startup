@@ -7,7 +7,7 @@ export function LandingPage({username, accountData, setAccountData}) {
     React.useEffect(() => {
         const scoresText = localStorage.getItem('accountData');
         if (scoresText) {
-          setScores(JSON.parse(scoresText));
+          setAccountData(JSON.parse(scoresText));
         }[]
       }, []);
 
@@ -47,9 +47,7 @@ return (
                             <NavLink to="/skateView" className="landing-page-button">VIEW SKATES</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <NavLink to="/skateClicker" className="button-not-available">
-                                Skate Clicker <span style={{ fontFamily: "'Syne', Sans-serif" }}>(Coming Soon)</span>
-                            </NavLink>
+                            <NavLink to="/skateClicker" className="landing-page-button">SKATE CLICKER</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/about" className="landing-page-button">ABOUT</NavLink>
