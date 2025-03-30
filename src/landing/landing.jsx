@@ -22,7 +22,7 @@ function ErrorModal({ isOpen, onCancel}) {
 
 }
 
-export function LandingPage({username, accountData, setAccountData}) {
+export function LandingPage({username, accountData, setAccountData, highScores, setHighScores}) {
     //we get the account data from local storage
     let localAccountData = [];
     const accountDataText = localStorage.getItem('accountData');
@@ -38,15 +38,20 @@ export function LandingPage({username, accountData, setAccountData}) {
     let [errorModalOpen, setErrorModalOpen] = React.useState(false);
     
     React.useEffect(() => {
-        //if the account data exsists, we set the account data to the account data in local storage
+        //if the account data and highscores exist, we set them equal to what is stored in local storage
         if (accountDataText) {
           setAccountData(JSON.parse(accountDataText));
+        }
+        if (localStorage.getItem('highScores')) {
+          setHighScores(JSON.parse(localStorage.getItem('highScores')));
         }
         //if the account data doesn't exist, we create an empty array and set the account data to that
         else {
             const initialData = [];
             localStorage.setItem('accountData', JSON.stringify(initialData));
+            localStorage.setItem('highScores', JSON.stringify(initialData));
             setAccountData(initialData);
+            setHighScores(initialData);
         }
     }, []);
 
@@ -54,9 +59,7 @@ export function LandingPage({username, accountData, setAccountData}) {
         //If the user doesn't exist then create a new "user" and intitalize their name as username, their clicks as 0, and their skates as 0
 
         if (existingUserIndex === -1) {
-            console.log(existingUserIndex)
-            console.log("user does not exist");
-            const newUser = {name: username, clicks: 0, skates: 0};
+            const newUser = {name: username, clicks: 0, skates: 1};
             localAccountData.push(newUser);
             setAccountData([...localAccountData]);
             localStorage.setItem('accountData', JSON.stringify(localAccountData));
@@ -64,8 +67,8 @@ export function LandingPage({username, accountData, setAccountData}) {
     }, [username]);
 
     const leaderBoard = [];
-    if (accountData.length) {
-        for (const [i, score] of accountData.entries()) {
+    if (highScores.length) {
+        for (const [i, score] of highScores.entries()) {
           leaderBoard.push(
             <tr key={i}>
                 <td>{i+1}</td>
