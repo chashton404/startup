@@ -2,14 +2,66 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 
+//We make an error modal for the user so that they can't access skateView and skateClicker if they don't have any skates
+function ErrorModal({ isOpen, onCancel}) {
+    if (!isOpen) {
+        return null;
+    }
+
+    return (
+        <div className="modal-overlay">
+            <div className="modal-card">
+                <h3>You don't have any skates</h3>
+                <p style={{ textAlign: 'center' }}>Please design a skate first</p>
+                <div className="button-container">
+                    <button className="btn cancel-button" onClick={onCancel}>Ok</button>
+                </div>
+            </div>
+        </div>
+    );
+
+}
+
 export function LandingPage({username, accountData, setAccountData}) {
+    //we get the account data from local storage
+    let localAccountData = [];
+    const accountDataText = localStorage.getItem('accountData');
+
+    if (accountDataText) {
+        localAccountData = JSON.parse(accountDataText);
+    }
+
+    //we check if the user already exists, returns -1 if they don't
+    let existingUserIndex = localAccountData.findIndex((accountData) => accountData.name === username);
+
+    //we create a react state variable for the error modal
+    let [errorModalOpen, setErrorModalOpen] = React.useState(false);
+    
+    React.useEffect(() => {
+        //if the account data exsists, we set the account data to the account data in local storage
+        if (accountDataText) {
+          setAccountData(JSON.parse(accountDataText));
+        }
+        //if the account data doesn't exist, we create an empty array and set the account data to that
+        else {
+            const initialData = [];
+            localStorage.setItem('accountData', JSON.stringify(initialData));
+            setAccountData(initialData);
+        }
+    }, []);
 
     React.useEffect(() => {
-        const scoresText = localStorage.getItem('accountData');
-        if (scoresText) {
-          setAccountData(JSON.parse(scoresText));
-        }[]
-      }, []);
+        //If the user doesn't exist then create a new "user" and intitalize their name as username, their clicks as 0, and their skates as 0
+
+        if (existingUserIndex === -1) {
+            console.log(existingUserIndex)
+            console.log("user does not exist");
+            const newUser = {name: username, clicks: 0, skates: 0};
+            localAccountData.push(newUser);
+            setAccountData([...localAccountData]);
+            localStorage.setItem('accountData', JSON.stringify(localAccountData));
+        }
+    }, [username]);
 
     const leaderBoard = [];
     if (accountData.length) {
@@ -29,10 +81,24 @@ export function LandingPage({username, accountData, setAccountData}) {
           </tr>
         );
     }
+
+    function logoutUser() {
+        localStorage.removeItem('username');
+    }
+
+    function openErrorModal() {
+        setErrorModalOpen(true);
+    }
+
+    function closeModal() {
+        setErrorModalOpen(false);
+    }
+
 return (
     <main style={{ height: 'calc(100vh - 200px)', position: 'relative'}}>
+        <ErrorModal isOpen={errorModalOpen} onCancel={closeModal} />
         <NavLink to="/login" className="position-absolute top-0 end-0 mt-3 me-3"
-        style={{ fontFamily: 'Syne', zIndex: 1 }}>Logout</NavLink>
+        style={{ fontFamily: 'Syne', zIndex: 1 }} onClick={logoutUser}>Logout</NavLink>
         <div className="container mt-4">
             <div className="row">
                 <div className="col-md-6">
@@ -44,10 +110,20 @@ return (
                             <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <NavLink to="/skateView" className="landing-page-button">VIEW SKATES</NavLink>
+                            <NavLink to="/skateView" className="landing-page-button" onClick={(e) => {
+                                if (accountData[existingUserIndex]?.skates === 0) {
+                                    e.preventDefault();
+                                    openErrorModal();
+                                }
+                            }}>VIEW SKATES</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <NavLink to="/skateClicker" className="landing-page-button">SKATE CLICKER</NavLink>
+                            <NavLink to="/skateClicker" className="landing-page-button"onClick={(e) => {
+                                if (accountData[existingUserIndex]?.skates === 0) {
+                                    e.preventDefault();
+                                    openErrorModal();
+                                }
+                            }}>SKATE CLICKER</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/about" className="landing-page-button">ABOUT</NavLink>
