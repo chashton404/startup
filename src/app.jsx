@@ -35,7 +35,7 @@ export default function App() {
             <Route path="/" element={<Login setUsername={setUsername} />} />
             <Route path="/login" element={<Login setUsername={setUsername} />} />
             <Route path="/landing" element={<LandingPage username={username} accountData={accountData} setAccountData={setAccountData} highScores={highScores} setHighScores={setHighScores}/>} />
-            <Route path="/skateView" element={<SkateView />} />
+            <Route path="/skateView" element={<SkateView accountData={accountData} setAccountData={setAccountData}/>} />
             <Route path="/skateDesign" element={<SkateDesign accountData={accountData} setAccountData={setAccountData}/>} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/skateClicker" element={<SkateClicker accountData={accountData} setAccountData={setAccountData} highScores={highScores} setHighScores={setHighScores}/>} />
