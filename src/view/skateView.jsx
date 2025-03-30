@@ -42,14 +42,17 @@ function ErrorModal({ isOpen, onCancel}) {
 
 }
 
-export function SkateView() {
-    const [skates, setSkates] = React.useState([
-        { skateName: 'one', skateStatus: 'equipped'},
-        { skateName: 'two', skateStatus: 'not equipped'},
-        { skateName: 'three', skateStatus: 'not equipped'},
-        { skateName: 'four', skateStatus: 'not equipped'},
-        { skateName: 'five', skateStatus: 'not equipped'}
-    ]);
+export function SkateView({accountData, setAccountData}) {
+    let localAccountData = JSON.parse(localStorage.getItem('accountData'));
+    const existingUserIndex = localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'));
+    
+    React.useEffect(() => {
+        console.log(existingUserIndex)
+        console.log(localStorage.getItem('username'))
+        console.log(localAccountData[existingUserIndex].skates)
+    }, []);
+
+    const [skates, setSkates] = React.useState(localAccountData[existingUserIndex].skates);
 
     const [confirmOpenDeleteModal, setConfirmOpenDeleteModal] = React.useState(false);
     const [errorModalOpen, setErrorModalOpen] = React.useState(false);
