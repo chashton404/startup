@@ -5,10 +5,12 @@ export const RollerSkate = ({
     stripeColor,
     baseColor,
     wheelColor,
-    toeStopColor 
+    toeStopColor,
+    width,
+    height 
 }) => {
   return (
-    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="350" height="350">
+    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width= "300px"  height= "300px">
       <defs>
         <style>
           {`

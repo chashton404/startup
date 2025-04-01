@@ -1,7 +1,8 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
-import { RollerSkate } from './rollerskate';
+import { RollerSkate } from '../../lib/originalRollerskate';
+
 import './modal.css';
 
 //We make a custom confirmation modal for if the user wants to delete the skate
@@ -52,7 +53,11 @@ export function SkateView({accountData, setAccountData}) {
         console.log(localAccountData[existingUserIndex].skates)
     }, []);
 
-    const [skates, setSkates] = React.useState(localAccountData[existingUserIndex].skates);
+    const [skates, setSkates] = React.useState([
+        { skateName: 'orange', topColor:'#F1592A' , stripeColor:'#F1592A' , baseColor:'#F1592A' , wheelColor:'#F1592A' , toeStopColor:'#F1592A' , skateStatus: 'equipped'},
+        { skateName: 'blue', topColor:'#0F75BC' , stripeColor:'#0F75BC' , baseColor:'#0F75BC' , wheelColor:'#0F75BC' , toeStopColor:'#0F75BC' , skateStatus: 'not equipped'}
+        ]);
+    //React.useState(localAccountData[existingUserIndex].skates);
 
     const [confirmOpenDeleteModal, setConfirmOpenDeleteModal] = React.useState(false);
     const [errorModalOpen, setErrorModalOpen] = React.useState(false);
@@ -97,6 +102,14 @@ export function SkateView({accountData, setAccountData}) {
 
         setSkates(newSkates);
     }
+
+    function printSkateColors(skate) { 
+        console.log('Top Color: ' + skate.topColor);
+        console.log('Stripe Color: ' + skate.stripeColor);  
+        console.log('Base Color: ' + skate.baseColor);
+        console.log('Wheel Color: ' + skate.wheelColor);
+        console.log('Toe Stop Color: ' + skate.toeStopColor);
+    }
     
 return (
     <main style={{ display: 'block' }}>
@@ -117,8 +130,14 @@ return (
             {skates.map((skate, index) => (
                 <div key={index} className="col-6 col-md-3 p-3">
                     <div className="card p-3">
-                        <img src="public/skate-placeholders/cool-mint-skate-placeholder.svg" alt="Skate Image" className="img-fluid" />
-                        <h3>{skate.skateName}</h3>
+                        <RollerSkate 
+                            topColor= {skate.topColor}
+                            stripeColor= {skate.stripeColor}
+                            baseColor= {skate.baseColor}
+                            wheelColor= {skate.wheelColor}
+                            toeStopColor= {skate.toeStopColor}
+                        />
+                        <h3 onClick = {() => printSkateColors(skate)}>{skate.skateName}</h3>
                         {skate.skateStatus === 'equipped' ? (
                             <button className="btn signin-button-secondary mb-1" disabled>Equipped</button>
                         ) : (

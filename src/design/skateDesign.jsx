@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { RollerSkate } from './rollerskate';
+import { RollerSkate } from '../../lib/originalRollerskate';
 
 function SkateDesigned() {
     const navigate = useNavigate();
