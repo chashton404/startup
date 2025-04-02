@@ -57,11 +57,13 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
         <main style={{ height: 'calc(100vh - 200px)' }}>
             <div className="container">
                 <div className="row w-100 pt-4">
-                    <div className="col-md-2">
-                        <NavLink to="/landing" className="back-button"> &lt; &lt; BACK </NavLink>
+                    <div className="col">
+                        <NavLink to="/landing" className="btn signin-button-primary">Back</NavLink>
                     </div>
-                    <div className="col-md-10">
-                        <h2>Click the Skate to increase your score and become the top skater!</h2>
+                </div>
+                <div className="row w-100 pt-4">
+                    <div className="col-md-12">
+                        <h2 className="justify-content-center" style={{ textAlign: 'center' }}>Click the Skate to increase your score and become the top skater!</h2>
                     </div>  
                 </div>
                 <div onClick={skateClicked}  className="row w-100 p-3 align-items-center justify-content-center">
