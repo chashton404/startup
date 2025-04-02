@@ -38,7 +38,11 @@ export function SkateDesign() {
         { color: '#F1592A', className: 'selector-button-orange' },
         { color: '#0F75BC', className: 'selector-button-blue' },
         { color: '#2BB673', className: 'selector-button-green' },
-      ];
+    ];
+
+    function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
+        console.log("adding skate with colors: ", topColor, stripeColor, baseColor, wheelColor, toeStopColor);
+    }
 
 
   return (
@@ -150,13 +154,16 @@ export function SkateDesign() {
                             baseColor={baseColor}
                             wheelColor={wheelColor}
                             toeStopColor={toeStopColor}
+                            width="350px"
+                            height="350px"
+
                         />
                     </div>
                 </div>
             </div>
             <div className="row d-flex justify-content-center pt-5">
                 <NavLink to="/landing" className="btn signin-button-secondary">Cancel</NavLink>
-                <NavLink to="/skateView" className="btn signin-button-primary">Add to Skate Garage</NavLink>
+                <NavLink to="/skateView" className="btn signin-button-primary" onClick={() => addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor)}>Add to Skate Garage</NavLink>
             </div>
         </div>
     </main>
