@@ -2,35 +2,13 @@ import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { RollerSkate } from '../../lib/originalRollerskate';
 
-function SkateDesigned() {
-    const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
-        navigate("/skateView"); // Navigates to the Skate View page
-    }
-}
-
-function SkateDesignCanceled() {
-    const navigate = useNavigate();
-
-    const handleSubmit = (event) => {
-        navigate("/landing"); // Navigates to the landing page
-    }   
-}
-
-
-
-
-export function SkateDesign() {
-    const [topColor, setTopColor] = React.useState('black');
-    const [stripeColor, setStripeColor] = React.useState('black');
-    const [baseColor, setBaseColor] = React.useState('black');
-    const [wheelColor, setWheelColor] = React.useState('black');
-    const [toeStopColor, setToeStopColor] = React.useState('black');
-
-    const handleColorChange = (event, setColor) => {
-        setColor(event.target.value);
-    }
+export function SkateDesign(accountData, setAccountData) {
+    const [topColor, setTopColor] = React.useState('#231f20');
+    const [stripeColor, setStripeColor] = React.useState('#231f20');
+    const [baseColor, setBaseColor] = React.useState('#231f20');
+    const [wheelColor, setWheelColor] = React.useState('#231f20');
+    const [toeStopColor, setToeStopColor] = React.useState('#231f20');
 
     const colorOptions = [
         { color: '#231f20', className: 'selector-button-black' },
@@ -40,8 +18,19 @@ export function SkateDesign() {
         { color: '#2BB673', className: 'selector-button-green' },
     ];
 
+    const [skateNameLocal, setSkateNameLocal] = React.useState('');
+    const localAccountData = JSON.parse(localStorage.getItem('accountData'));
+    const localSkates = localAccountData[localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'))].skates;
+    console.log(localSkates)
+
     function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
-        console.log("adding skate with colors: ", topColor, stripeColor, baseColor, wheelColor, toeStopColor);
+        let newSkate = { skateName: skateNameLocal, topColor: topColor, stripeColor: stripeColor, baseColor: baseColor, wheelColor: wheelColor, toeStopColor: toeStopColor, skateStatus: 'not equipped' };
+        let newSkates = [localSkates, newSkate];
+        console.log(newSkates)
+    }
+
+    function handleSkateNameChange(event) {
+        setSkateNameLocal(event.target.value);
     }
 
 
@@ -53,7 +42,7 @@ export function SkateDesign() {
                     <div className="row-md-2">
                         <form action="skateDesign.html" method="get">
                             <div>  
-                                <input type="text" name="username" placeholder="Skate Name" className="skate-name-input"/>
+                                <input type="text" name="username" placeholder="Skate Name" className="skate-name-input" onChange={handleSkateNameChange}/>
                             </div>
                         </form>
                     </div>
@@ -163,7 +152,15 @@ export function SkateDesign() {
             </div>
             <div className="row d-flex justify-content-center pt-5">
                 <NavLink to="/landing" className="btn signin-button-secondary">Cancel</NavLink>
-                <NavLink to="/skateView" className="btn signin-button-primary" onClick={() => addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor)}>Add to Skate Garage</NavLink>
+                <NavLink to="/skateView" className="btn signin-button-primary" onClick={(e) => {
+                    if (!skateNameLocal) {
+                        e.preventDefault();
+                        alert('Please enter a skate name');
+                    }
+                    else {
+                        addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor)
+                    }
+                }}>Add to Skate Garage</NavLink>
             </div>
         </div>
     </main>
