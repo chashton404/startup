@@ -29,8 +29,7 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
         const newScore = {name: localStorage.getItem('username'), clicks: temporaryCount, skates: accountData[existingUserIndex].skates};
 
         // Get current scores from localStorage
-        const scoresText = localStorage.getItem('accountData');
-        let localScores = JSON.parse(scoresText);
+        let localScores = JSON.parse(localStorage.getItem('accountData'));
 
         if (newScore.clicks > accountData[existingUserIndex].clicks) {
             localScores[existingUserIndex] = newScore;
