@@ -7,13 +7,12 @@ export const RollerSkate = ({
     wheelColor,
     toeStopColor,
     width = "300px",
-    height = "300px" 
+    height = "300px",
+    uniqueId 
 }) => {
-  // Generate a unique ID for this component instance
-  const uniqueId = React.useId();
   
   return (
-    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width={width} height={height}>
+    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
       <defs>
         <style>
           {`
