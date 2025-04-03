@@ -24,6 +24,9 @@ export function SkateDesign(accountData, setAccountData) {
 
     function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
         let newSkate = { skateName: skateNameLocal, topColor: topColor, stripeColor: stripeColor, baseColor: baseColor, wheelColor: wheelColor, toeStopColor: toeStopColor, skateStatus: 'not equipped' };
+        if (localSkates.length === 0) {
+            newSkate.skateStatus = 'equipped';
+        }
         // Create a new skate, and then push it onto the local skates
         localSkates.push(newSkate);
         // Update the local account data by finding their username and setting their skates equal to new local skates
