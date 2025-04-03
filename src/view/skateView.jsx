@@ -53,11 +53,7 @@ export function SkateView({accountData, setAccountData}) {
         console.log(localAccountData[existingUserIndex].skates)
     }, []);
 
-    const [skates, setSkates] = React.useState([
-        { skateName: 'orange', topColor:'#F1592A' , stripeColor:'#F1592A' , baseColor:'#F1592A' , wheelColor:'#F1592A' , toeStopColor:'#F1592A' , skateStatus: 'equipped'},
-        { skateName: 'blue', topColor:'#0F75BC' , stripeColor:'#0F75BC' , baseColor:'#0F75BC' , wheelColor:'#0F75BC' , toeStopColor:'#0F75BC' , skateStatus: 'not equipped'}
-        ]);
-    //React.useState(localAccountData[existingUserIndex].skates);
+    const [skates, setSkates] = React.useState(localAccountData[existingUserIndex].skates);
 
     const [confirmOpenDeleteModal, setConfirmOpenDeleteModal] = React.useState(false);
     const [errorModalOpen, setErrorModalOpen] = React.useState(false);
@@ -101,6 +97,9 @@ export function SkateView({accountData, setAccountData}) {
         });
 
         setSkates(newSkates);
+        localAccountData[existingUserIndex].skates = newSkates;
+        localStorage.setItem('accountData', JSON.stringify(localAccountData));
+        setAccountData(localAccountData);
     }
 
     function printSkateColors(skate) { 
