@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-;
+import { RollerSkate } from '../../lib/originalRollerskate';
 
 export function SkateClicker({accountData, setAccountData, highScores, setHighScores}) {
 
@@ -8,6 +8,8 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
     const [count, setCount] = React.useState(0);
     const user = localStorage.getItem('username');
     let existingUserIndex = accountData.findIndex((accountData) => accountData.name === user);
+    const localEquippedSkate = accountData[existingUserIndex].equippedSkate;
+    console.log(localEquippedSkate)
 
     // Find if user already exists
     React.useEffect(() => {     
@@ -26,7 +28,7 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
     async function updateScoresLocal(temporaryCount) {
 
         // Create a new score object
-        const newScore = {name: localStorage.getItem('username'), clicks: temporaryCount, skates: accountData[existingUserIndex].skates};
+        const newScore = {name: localStorage.getItem('username'), clicks: temporaryCount, skates: accountData[existingUserIndex].skates, equippedSkate: accountData[existingUserIndex].equippedSkate};
 
         // Get current scores from localStorage
         let localScores = JSON.parse(localStorage.getItem('accountData'));
@@ -68,7 +70,15 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
                 </div>
                 <div onClick={skateClicked}  className="row w-100 p-3 align-items-center justify-content-center">
                     <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px", width: "350px"}}>
-                        <img src="public/skate-placeholders/ninja-skate.svg" alt="live rendering of the options selected" className="skate-designer-rendering"/>
+                        <RollerSkate
+                            topColor={localEquippedSkate.topColor}
+                            stripeColor={localEquippedSkate.stripeColor}
+                            baseColor={localEquippedSkate.baseColor}
+                            wheelColor= {localEquippedSkate.wheelColor}
+                            toeStopColor= {localEquippedSkate.toeStopColor}
+                            width="300px"
+                            height="300px"
+                        /> 
                     </div>
                 </div>
                 <div className="row w-100 mb-3">
