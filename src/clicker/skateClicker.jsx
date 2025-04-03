@@ -9,7 +9,6 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
     const user = localStorage.getItem('username');
     let existingUserIndex = accountData.findIndex((accountData) => accountData.name === user);
     const localEquippedSkate = accountData[existingUserIndex].equippedSkate;
-    console.log(localEquippedSkate)
 
     // Find if user already exists
     React.useEffect(() => {     
