@@ -59,10 +59,7 @@ export function LandingPage({username, accountData, setAccountData, highScores, 
         //If the user doesn't exist then create a new "user" and intitalize their name as username, their clicks as 0, and their skates as 0
 
         if (existingUserIndex === -1) {
-            const newUser = {name: username, clicks: 0, skates: [
-                { skateName: 'orange', topColor:'#F1592A' , stripeColor:'#F1592A' , baseColor:'#F1592A' , wheelColor:'#F1592A' , toeStopColor:'#F1592A' , skateStatus: 'equipped'},
-                { skateName: 'blue', topColor:'#0F75BC' , stripeColor:'#0F75BC' , baseColor:'#0F75BC' , wheelColor:'#0F75BC' , toeStopColor:'#0F75BC' , skateStatus: 'not equipped'}
-                ]};
+            const newUser = {name: username, clicks: 0, skates: []};
             localAccountData.push(newUser);
             setAccountData([...localAccountData]);
             localStorage.setItem('accountData', JSON.stringify(localAccountData));
@@ -117,7 +114,7 @@ return (
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/skateView" className="landing-page-button" onClick={(e) => {
-                                if (accountData[existingUserIndex]?.skates === 0) {
+                                if (accountData[existingUserIndex]?.skates?.length === 0) {
                                     e.preventDefault();
                                     openErrorModal();
                                 }
@@ -125,7 +122,7 @@ return (
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/skateClicker" className="landing-page-button"onClick={(e) => {
-                                if (accountData[existingUserIndex]?.skates === 0) {
+                                if (accountData[existingUserIndex]?.skates?.length === 0) {
                                     e.preventDefault();
                                     openErrorModal();
                                 }
