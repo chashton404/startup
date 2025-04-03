@@ -20,17 +20,27 @@ export function SkateDesign(accountData, setAccountData) {
 
     const [skateNameLocal, setSkateNameLocal] = React.useState('');
     const localAccountData = JSON.parse(localStorage.getItem('accountData'));
-    const localSkates = localAccountData[localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'))].skates;
+    const existingUserIndex = localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'));
+    const localSkates = localAccountData[existingUserIndex].skates;
+    const localEquippedSkate = localAccountData[existingUserIndex].equippedSkate;
 
     function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
         let newSkate = { skateName: skateNameLocal, topColor: topColor, stripeColor: stripeColor, baseColor: baseColor, wheelColor: wheelColor, toeStopColor: toeStopColor, skateStatus: 'not equipped' };
         if (localSkates.length === 0) {
             newSkate.skateStatus = 'equipped';
+            localEquippedSkate.skateName = skateNameLocal;
+            localEquippedSkate.topColor = topColor;
+            localEquippedSkate.stripeColor = stripeColor;
+            localEquippedSkate.baseColor = baseColor;
+            localEquippedSkate.wheelColor = wheelColor;
+            localEquippedSkate.toeStopColor = toeStopColor;
+            localEquippedSkate.skateStatus = 'equipped';
+            console.log(localEquippedSkate);
         }
         // Create a new skate, and then push it onto the local skates
         localSkates.push(newSkate);
         // Update the local account data by finding their username and setting their skates equal to new local skates
-        localAccountData[localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'))].skates = localSkates;
+        localAccountData[existingUserIndex].skates = localSkates;
         localStorage.setItem('accountData', JSON.stringify(localAccountData));
         setAccountData(localAccountData);
         console.log(localAccountData)
@@ -47,7 +57,7 @@ export function SkateDesign(accountData, setAccountData) {
             <div className="row pt-5">
                 <div className="col-md-6 justify-content-center">
                     <div className="row-md-2">
-                        <form action="skateDesign.html" method="get">
+                        <form action="/skateView" method="get">
                             <div>  
                                 <input type="text" name="username" placeholder="Skate Name" className="skate-name-input" onChange={handleSkateNameChange}/>
                             </div>
