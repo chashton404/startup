@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
-import { RollerSkate } from '../../lib/originalRollerskate';
+import { RollerSkate } from '../../lib/Rollerskate';
 
 import './modal.css';
 
@@ -46,12 +46,7 @@ function ErrorModal({ isOpen, onCancel}) {
 export function SkateView({accountData, setAccountData}) {
     let localAccountData = JSON.parse(localStorage.getItem('accountData'));
     const existingUserIndex = localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'));
-    
-    React.useEffect(() => {
-        console.log(existingUserIndex)
-        console.log(localStorage.getItem('username'))
-        console.log(localAccountData[existingUserIndex].skates)
-    }, []);
+
 
     const [skates, setSkates] = React.useState(localAccountData[existingUserIndex].skates);
 
@@ -77,7 +72,6 @@ export function SkateView({accountData, setAccountData}) {
     }
     
     function openErrorModal() {
-        console.log('openErrorModal called');
         setErrorModalOpen(true);
     }
 
@@ -86,7 +80,6 @@ export function SkateView({accountData, setAccountData}) {
     }
     
     function equipSkate(index) {
-        console.log('equipSkate called on skate with the index of' + index);
 
         const newSkates = skates.map((skate, i) => {
             if (i === index) {
@@ -98,16 +91,11 @@ export function SkateView({accountData, setAccountData}) {
 
         setSkates(newSkates);
         localAccountData[existingUserIndex].skates = newSkates;
+        localAccountData[existingUserIndex].equippedSkate = newSkates[index];
         localStorage.setItem('accountData', JSON.stringify(localAccountData));
         setAccountData(localAccountData);
-    }
 
-    function printSkateColors(skate) { 
-        console.log('Top Color: ' + skate.topColor);
-        console.log('Stripe Color: ' + skate.stripeColor);  
-        console.log('Base Color: ' + skate.baseColor);
-        console.log('Wheel Color: ' + skate.wheelColor);
-        console.log('Toe Stop Color: ' + skate.toeStopColor);
+        
     }
     
 return (
@@ -135,6 +123,7 @@ return (
                             baseColor= {skate.baseColor}
                             wheelColor= {skate.wheelColor}
                             toeStopColor= {skate.toeStopColor}
+                            uniqueId={`skate-${index}`}
                         />
                         <h3 onClick = {() => printSkateColors(skate)}>{skate.skateName}</h3>
                         {skate.skateStatus === 'equipped' ? (
