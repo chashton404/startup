@@ -21,12 +21,16 @@ export function SkateDesign(accountData, setAccountData) {
     const [skateNameLocal, setSkateNameLocal] = React.useState('');
     const localAccountData = JSON.parse(localStorage.getItem('accountData'));
     const localSkates = localAccountData[localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'))].skates;
-    console.log(localSkates)
 
     function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
         let newSkate = { skateName: skateNameLocal, topColor: topColor, stripeColor: stripeColor, baseColor: baseColor, wheelColor: wheelColor, toeStopColor: toeStopColor, skateStatus: 'not equipped' };
-        let newSkates = [localSkates, newSkate];
-        console.log(newSkates)
+        // Create a new skate, and then push it onto the local skates
+        localSkates.push(newSkate);
+        // Update the local account data by finding their username and setting their skates equal to new local skates
+        localAccountData[localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'))].skates = localSkates;
+        localStorage.setItem('accountData', JSON.stringify(localAccountData));
+        setAccountData(localAccountData);
+        console.log(localAccountData)
     }
 
     function handleSkateNameChange(event) {
