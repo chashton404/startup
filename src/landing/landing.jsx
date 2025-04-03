@@ -59,7 +59,7 @@ export function LandingPage({username, accountData, setAccountData, highScores, 
         //If the user doesn't exist then create a new "user" and intitalize their name as username, their clicks as 0, and their skates as 0
 
         if (existingUserIndex === -1) {
-            const newUser = {name: username, clicks: 0, skates: []};
+            const newUser = {name: username, clicks: 0, skates: [], equippedSkate: {skateName: 'null', topColor: 'null', stripeColor: 'null', baseColor: 'null', wheelColor: 'null', toeStopColor: 'null', skateStatus: 'not equipped'}};
             localAccountData.push(newUser);
             setAccountData([...localAccountData]);
             localStorage.setItem('accountData', JSON.stringify(localAccountData));
