@@ -99,8 +99,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - The Skate Clicker Game is now fully functional! You can design a skate, add it to your library, and equip it to then use it in the game.
+- [x] **Hooks** - There are react variables used throughout the app specifically the user data.
 
 ## 🚀 Service deliverable
 
