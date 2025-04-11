@@ -2,17 +2,25 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./login.css";
 
-function MyForm() {
-    const navigate = useNavigate();
-  
-    const handleSubmit = (event) => {
-      navigate("/landing"); // Navigates to the landing page
-    };
+//we can also just make it so that text appears if we receive that the user's account does not exist
+function ErrorMessage({ isOpen }) {
+    if (!isOpen) {
+        return null;
+    }
+
+    return (
+        <div className="error-message">
+            <p style={{ color: 'red', fontSize: '14px' }}>
+                Username or password is incorrect. Please try again.
+            </p>
+        </div>
+    );
 }
 
 export function Login({setUsername}) {
     const [usernameLocal, setUsernameLocal] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
     function handleUsernameChange(event) {
         setUsernameLocal(event.target.value);
@@ -22,15 +30,32 @@ export function Login({setUsername}) {
         setPassword(event.target.value);
     }
 
-    function loginUser() {
-        localStorage.setItem('username', usernameLocal);
-        setUsername(usernameLocal);
+    async function createUser() {
+        loginOrCreate(`api/login/create`);
+    }
+
+    async function loginOrCreate(endpoint) {
+        const response = await fetch(endpoint, {
+            method: 'post',
+            body: JSON.stringify({ username: usernameLocal, password: password }),
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (response?.status === 200) {
+            localStorage.setItem('userName', usernameLocal);
+            props.onLogin(usernameLocal);
+            useNavigate('/landing');
+        } else {
+            const body = await response.json();
+            setErrorMessageOpen(true);
+        }
     }
 
 
     return (
         <main className="d-flex justify-content-center align-items-center" style={{ height: 'calc(100vh - 200px)'}}>
-            <form action="/landing" className="text-center" style={{ width: '33%' }}>
+            <form className="text-center" style={{ width: '33%' }}>
                 <h2 style={{ textAlign: 'center' }}>Please sign in to begin racing</h2>
                 <div>
                     <input
@@ -64,6 +89,7 @@ export function Login({setUsername}) {
                         }}
                     />
                 </div>
+                <ErrorMessage isOpen={errorMessageOpen} />
                 <div className="row">
                     <div className="col-md-6">
                         <button type="submit" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
@@ -71,7 +97,7 @@ export function Login({setUsername}) {
                         </button>
                     </div>
                     <div className="col-md-6">
-                        <button type="submit" className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
+                        <button type="submit" onClick={createUser} className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
                             Create Account
                         </button>
                     </div>
