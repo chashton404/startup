@@ -1,9 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
 import { FaGithub } from 'react-icons/fa';
 
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { Login } from './login/login';
 import { LandingPage } from './landing/landing';
 import { SkateView } from './view/skateView';
@@ -42,6 +44,7 @@ export default function App() {
             <Route path="/skateClicker" element={<SkateClicker accountData={accountData} setAccountData={setAccountData} highScores={highScores} setHighScores={setHighScores}/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <ToastContainer />
         </main>
 
         <footer>
