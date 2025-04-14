@@ -13,8 +13,6 @@ import { SkateClicker } from './clicker/skateClicker';
 
 export default function App() {
   const [username, setUsername] = React.useState(localStorage.getItem('username' || null));
-  const currentAuthState = username ? AuthState.Authenticated : AuthState.Unauthenticated;
-  const [authState, setAuthState] = React.useState(currentAuthState);
 
   const [accountData, setAccountData] = React.useState([]);
   const [highScores, setHighScores] = React.useState([]);

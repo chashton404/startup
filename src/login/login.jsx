@@ -21,6 +21,7 @@ export function Login({setUsername}) {
     const [usernameLocal, setUsernameLocal] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
+    const navigate = useNavigate();
 
     function handleUsernameChange(event) {
         setUsernameLocal(event.target.value);
@@ -30,8 +31,12 @@ export function Login({setUsername}) {
         setPassword(event.target.value);
     }
 
+    async function loginUser() {
+        loginOrCreate(`api/auth/login`);
+    }
+
     async function createUser() {
-        loginOrCreate(`api/login/create`);
+        loginOrCreate(`api/auth/create`);
     }
 
     async function loginOrCreate(endpoint) {
@@ -44,11 +49,14 @@ export function Login({setUsername}) {
         });
         if (response?.status === 200) {
             localStorage.setItem('userName', usernameLocal);
-            props.onLogin(usernameLocal);
-            useNavigate('/landing');
+            navigate('/landing');
         } else {
-            const body = await response.json();
-            setErrorMessageOpen(true);
+            if (endpoint === `api/auth/login`){  
+                setErrorMessageOpen(true);
+                setTimeout(() => {
+                    setErrorMessageOpen(false);
+                }, 3000);
+            }
         }
     }
 
@@ -92,12 +100,12 @@ export function Login({setUsername}) {
                 <ErrorMessage isOpen={errorMessageOpen} />
                 <div className="row">
                     <div className="col-md-6">
-                        <button type="submit" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
+                        <button type="button" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
                             Login
                         </button>
                     </div>
                     <div className="col-md-6">
-                        <button type="submit" onClick={createUser} className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
+                        <button type="button" onClick={createUser} className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
                             Create Account
                         </button>
                     </div>

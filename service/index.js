@@ -1,30 +1,128 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
+const cookieParser = require('cookie-parser');
+const uuid = require('uuid');
 const app = express();
+
+const authCookieName = 'token';
+
 const PORT = 3000;
 
 //lets create the arrays that we want to have on the backend
+let users = [];
+let accountData = [];
 
+// JSON body parsing using built-in middleware
+app.use(express.json());
 
-app.get('/try', (req, res) => {
-    res.json({ msg: `${getRandomInt(1,20)}` });
-    });
+// Use the cookie parser middleware for tracking authentication tokens
+app.use(cookieParser());
+
+// Serve up the front-end static content hosting
+app.use(express.static('public'));
+
+// Router for service endpoints
+var apiRouter = express.Router();
+app.use(`/api`, apiRouter);
+
+// CreateAuth a new user
+apiRouter.post('/auth/create', async (req, res) => {
+    console.log('Creating user:', req.body.username);
+    if (await findUser('username', req.body.username)) {
+        res.status(409).send({ msg: 'Existing user' });
+    } else {
+        const user = await createUser(req.body.username, req.body.password);
+        
+        setAuthCookie(res, user.token);
+        res.send({ username: user.username });
+    }
+});
+  
+// GetAuth login an existing user
+apiRouter.post('/auth/login', async (req, res) => {
+    const user = await findUser('username', req.body.username);
+    if (user) {
+      if (await bcrypt.compare(req.body.password, user.password)) {
+        user.token = uuid.v4();
+        setAuthCookie(res, user.token);
+        res.send({ username: user.username });
+        return;
+      }
+    }
+    res.status(401).send({ msg: 'Unauthorized' });
+});
+  
+// DeleteAuth logout a user
+apiRouter.delete('/auth/logout', async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+      delete user.token;
+    }
+    res.clearCookie(authCookieName);
+    res.status(204).end();
+});
+
+// Function to print users
+apiRouter.get('/users', async (req, res) => {
+    res.send(users);
+});
+
+// Get User Data
+apiRouter.get('/userdata', async (req, res) => {
+    res.send(accountData);
+});
+
+// Submit User Data
+apiRouter.post('/userdata', async (req, res) => {
+    accountData = updateScores(req.body);
+    res.send(accountData);
+});
 
 // Simple root route
 app.get('/', (req, res) => {
-  res.json({ msg: 'Rollerskate Service' });
+    res.json({ msg: 'Rollerskate Service' });
 });
-
+  
 // Catch-all route
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+    res.status(404).json({ error: 'Route not found' });
 });
 
-// Start server
+//PUT OTHER API CALLS HERE
+
+// FUNCTIONS FOR THE API CALLS
+
+//Function to create a new user
+async function createUser(username, password) {
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = {
+        username: username,
+        password: passwordHash,
+        token: uuid.v4()
+    }
+    users.push(user);
+    return user;
+}
+
+//Function to find a user
+async function findUser(key, value) {
+    if (!value) {
+        return null;
+    }
+    return users.find ((user) => user[key] === value);
+}
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+    res.cookie(authCookieName, authToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'strict',
+    });
+  }
+
+// Start listening on server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
