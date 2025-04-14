@@ -82,7 +82,7 @@ export function Login({setUsername}) {
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
+                pauseOnHover: false,
                 draggable: true,
             });
         }
@@ -102,7 +102,16 @@ export function Login({setUsername}) {
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
+                pauseOnHover: false,
+                draggable: true,
+            });
+        } else if (response?.status === 409) {
+            toast.error('Username already exists. Please choose a different username.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
                 draggable: true,
             });
         } else {
@@ -111,7 +120,7 @@ export function Login({setUsername}) {
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
+                pauseOnHover: false,
                 draggable: true,
             });
         }       

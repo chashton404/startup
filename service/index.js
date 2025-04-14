@@ -9,8 +9,12 @@ const authCookieName = 'token';
 const PORT = 3000;
 
 //lets create the arrays that we want to have on the backend
+//eventually this will all be in a database
 let users = [];
-let accountData = [];
+let scores = [];
+let highScores = [];
+let userSkates = [];
+let userEquippedSkate = [];
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
@@ -32,7 +36,6 @@ apiRouter.post('/auth/create', async (req, res) => {
         res.status(409).send({ msg: 'Existing user' });
     } else {
         const user = await createUser(req.body.username, req.body.password);
-        
         setAuthCookie(res, user.token);
         res.send({ username: user.username });
     }
@@ -60,6 +63,71 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     }
     res.clearCookie(authCookieName);
     res.status(204).end();
+});
+
+// Middleware to verify that the user is authorized to call an endpoint
+const verifyAuth = async (req, res, next) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+      next();
+    } else {
+      res.status(401).send({ msg: 'Unauthorized' });
+    }
+  };
+
+//AddSkate used to add a recently designed skate to the user's skates
+apiRouter.post('/addSkate', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+
+    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
+    if (userSkatesIndex === -1) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+
+    const skate = {
+        skateName: req.body.skateName,
+        topColor: req.body.topColor,
+        stripeColor: req.body.stripeColor,
+        baseColor: req.body.baseColor,
+        wheelColor: req.body.wheelColor,
+        toeStopColor: req.body.toeStopColor,
+        skateStatus: req.body.skateStatus
+    }
+    
+    userSkates[userSkatesIndex].skates.push(skate);
+
+    // If the user has only one skate then that should be the equipped skate
+    if (userSkates[userSkatesIndex].skates.length === 1) {
+        userEquippedSkate[userSkatesIndex].skateName = skate.skateName;
+        userEquippedSkate[userSkatesIndex].topColor = skate.topColor;
+        userEquippedSkate[userSkatesIndex].stripeColor = skate.stripeColor;
+        userEquippedSkate[userSkatesIndex].baseColor = skate.baseColor;
+        userEquippedSkate[userSkatesIndex].wheelColor = skate.wheelColor;
+        userEquippedSkate[userSkatesIndex].toeStopColor = skate.toeStopColor;
+        userEquippedSkate[userSkatesIndex].skateStatus = 'equipped';
+    }
+
+    return res.status(200).send({ msg: 'Skate added successfully' });
+})
+
+// Function to Get the user's skates
+apiRouter.get('/getSkates', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
+    if (userSkatesIndex === -1) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+    res.send(userSkates[userSkatesIndex].skates);
+});
+
+// Function to Get the user's equipped skate
+apiRouter.get('/getEquippedSkate', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
+    if (userSkatesIndex === -1) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+    res.send(userEquippedSkate[userSkatesIndex]);
 });
 
 // Function to print users
@@ -102,6 +170,31 @@ async function createUser(username, password) {
         token: uuid.v4()
     }
     users.push(user);
+
+    const score = {
+        username: username,
+        clicks: 0
+    }
+    scores.push(score);
+
+    const skates = {
+        username: username,
+        skates: []
+    }
+    userSkates.push(skates);
+
+    const equippedSkate = {
+        username: username,
+        skateName: 'null',
+        topColor: 'null',
+        stripeColor: 'null',
+        baseColor: 'null',
+        wheelColor: 'null',
+        toeStopColor: 'null',
+        skateStatus: 'not equipped'
+    }
+    userEquippedSkate.push(equippedSkate)
+
     return user;
 }
 

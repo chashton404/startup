@@ -44,11 +44,27 @@ function ErrorModal({ isOpen, onCancel}) {
 }
 
 export function SkateView({accountData, setAccountData}) {
+
+    const [skates, setSkates] = React.useState([]);
+
+    React.useEffect(() => {
+        async function fetchSkates() {
+            const response = await fetch(`api/getSkates`, {
+                method: 'get',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+            const data = await response.json();
+            setSkates(data);
+        }
+
+        fetchSkates();
+    }, []);
+
     let localAccountData = JSON.parse(localStorage.getItem('accountData'));
     const existingUserIndex = localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'));
 
-
-    const [skates, setSkates] = React.useState(localAccountData[existingUserIndex].skates);
 
     const [confirmOpenDeleteModal, setConfirmOpenDeleteModal] = React.useState(false);
     const [errorModalOpen, setErrorModalOpen] = React.useState(false);
@@ -100,10 +116,7 @@ export function SkateView({accountData, setAccountData}) {
     
 return (
     <main style={{ display: 'block' }}>
-        <ConfirmDeleteModal isOpen={confirmOpenDeleteModal} onConfirm={confirmDelete} onCancel={cancelDelete} /> {/* Here we render the confirmModal that we made telling it 
-                                                                                                        to not load and when it is truly deleted it should use
-                                                                                                        the confirmDelete function and when it it's canceled it 
-                                                                                                        should use the cancelDelete function  */}
+        <ConfirmDeleteModal isOpen={confirmOpenDeleteModal} onConfirm={confirmDelete} onCancel={cancelDelete} /> 
         <ErrorModal isOpen={errorModalOpen} onCancel={closeErrorModal} />
         <div className="row-md-2 justify-content-center p-3">
             <div className="col">
@@ -114,7 +127,7 @@ return (
             </div>
         </div>
         <div className="row justify-content-start p-3">
-            {skates.map((skate, index) => (
+            {skates && skates.map((skate, index) => (
                 <div key={index} className="col-6 col-md-3 p-3">
                     <div className="card p-3">
                         <RollerSkate 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { RollerSkate } from '../../lib/originalRollerskate';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export function SkateDesign(accountData, setAccountData) {
@@ -19,31 +21,27 @@ export function SkateDesign(accountData, setAccountData) {
     ];
 
     const [skateNameLocal, setSkateNameLocal] = React.useState('');
-    const localAccountData = JSON.parse(localStorage.getItem('accountData'));
-    const existingUserIndex = localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'));
-    const localSkates = localAccountData[existingUserIndex].skates;
-    const localEquippedSkate = localAccountData[existingUserIndex].equippedSkate;
 
-    function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
+
+    async function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
         let newSkate = { skateName: skateNameLocal, topColor: topColor, stripeColor: stripeColor, baseColor: baseColor, wheelColor: wheelColor, toeStopColor: toeStopColor, skateStatus: 'not equipped' };
-        if (localSkates.length === 0) {
-            newSkate.skateStatus = 'equipped';
-            localEquippedSkate.skateName = skateNameLocal;
-            localEquippedSkate.topColor = topColor;
-            localEquippedSkate.stripeColor = stripeColor;
-            localEquippedSkate.baseColor = baseColor;
-            localEquippedSkate.wheelColor = wheelColor;
-            localEquippedSkate.toeStopColor = toeStopColor;
-            localEquippedSkate.skateStatus = 'equipped';
-            console.log(localEquippedSkate);
+        const response=await fetch(`api/addSkate`, {
+            method: 'post', 
+            body: JSON.stringify(newSkate),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+        if (response.status === 200) {
+            toast.success('Skate Added Successfully', {
+                position: "top-right",
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                autoClose: 3000,
+            });
         }
-        // Create a new skate, and then push it onto the local skates
-        localSkates.push(newSkate);
-        // Update the local account data by finding their username and setting their skates equal to new local skates
-        localAccountData[existingUserIndex].skates = localSkates;
-        localStorage.setItem('accountData', JSON.stringify(localAccountData));
-        setAccountData(localAccountData);
-        console.log(localAccountData)
     }
 
     function handleSkateNameChange(event) {
