@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./login.css";
 
 //we can also just make it so that text appears if we receive that the user's account does not exist
@@ -17,10 +19,41 @@ function ErrorMessage({ isOpen }) {
     );
 }
 
+function AccountCreatedMessage({ isOpen }) {
+    if (!isOpen) {
+        return null;
+    }
+
+    return (
+        <div className="account-created-message">
+            <p style={{ color: 'blue', fontSize: '14px' }}>
+                Account created successfully. You can now log in.
+            </p>
+        </div>
+    );
+}
+
+function LoginSubtext({isOpen, message, color}) {
+    // This component is used to display a message below the login form.
+    if (!isOpen) {
+        return null;
+    }
+
+    return (
+        <div className="login-subtext">
+            <p style={{ color: color, fontSize: '14px' }}>
+                {message}
+            </p>
+        </div>
+    );
+}
+
 export function Login({setUsername}) {
     const [usernameLocal, setUsernameLocal] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
+    const [LoginSubtextOpen, setLoginSubtextOpen] = React.useState(false);
+    const [loginSubtextMessage, setLoginSubtextMessage] = React.useState('');
+    const [loginSubtextColor, setLoginSubtextColor] = React.useState('black')
     const navigate = useNavigate();
 
     function handleUsernameChange(event) {
@@ -32,32 +65,56 @@ export function Login({setUsername}) {
     }
 
     async function loginUser() {
-        loginOrCreate(`api/auth/login`);
-    }
-
-    async function createUser() {
-        loginOrCreate(`api/auth/create`);
-    }
-
-    async function loginOrCreate(endpoint) {
-        const response = await fetch(endpoint, {
+        const response = await fetch(`api/auth/login`, {
             method: 'post',
             body: JSON.stringify({ username: usernameLocal, password: password }),
             headers: {
-              'Content-type': 'application/json; charset=UTF-8',
+                'Content-type': 'application/json; charset=UTF-8',
             },
         });
         if (response?.status === 200) {
             localStorage.setItem('userName', usernameLocal);
+            setUsername(usernameLocal);
             navigate('/landing');
         } else {
-            if (endpoint === `api/auth/login`){  
-                setErrorMessageOpen(true);
-                setTimeout(() => {
-                    setErrorMessageOpen(false);
-                }, 3000);
-            }
+            toast.error('Username or password is incorrect.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
         }
+    }
+
+    async function createUser() {
+        const response = await fetch(`api/auth/create`, {
+            method: 'post',
+            body: JSON.stringify({username: usernameLocal, password: password}),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        })
+        if (response?.status === 200) {
+            toast.success('Account created successfully! You can now log in.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        } else {
+            toast.error('Account creation failed. Please try again.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        }       
     }
 
 
@@ -97,7 +154,6 @@ export function Login({setUsername}) {
                         }}
                     />
                 </div>
-                <ErrorMessage isOpen={errorMessageOpen} />
                 <div className="row">
                     <div className="col-md-6">
                         <button type="button" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
