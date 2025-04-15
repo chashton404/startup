@@ -41,16 +41,9 @@ async function checkHasSkates() {
     }
 }
 
-export function LandingPage({username, accountData, setAccountData, highScores, setHighScores}) {
-    //we get the account data from local storage
-    let localAccountData = [];
-    const accountDataText = localStorage.getItem('accountData');
+export function LandingPage({username}) {
 
-    if (accountDataText) {
-        localAccountData = JSON.parse(accountDataText);
-    }
-
-    // Code to handle the clicks
+    // Code to handle navigation
     const navigate = useNavigate();
 
     const handleClick = async (route) => {
@@ -65,23 +58,26 @@ export function LandingPage({username, accountData, setAccountData, highScores, 
 
     //we create a react state variable for the error modal
     let [errorModalOpen, setErrorModalOpen] = React.useState(false);
+
+    const [highScores, setHighScores] = React.useState([]);
     
     React.useEffect(() => {
         //if the account data and highscores exist, we set them equal to what is stored in local storage
-        if (accountDataText) {
-          setAccountData(JSON.parse(accountDataText));
+        //Add code to fetch the high scores from the server
+        const fetchHighScores = async () => {
+            const response = await fetch(`/api/getHighScores`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            if (response.status === 200) {
+                const data = await response.json();
+                setHighScores(data);
+            }
         }
-        if (localStorage.getItem('highScores')) {
-          setHighScores(JSON.parse(localStorage.getItem('highScores')));
-        }
-        //if the account data doesn't exist, we create an empty array and set the account data to that
-        else {
-            const initialData = [];
-            localStorage.setItem('accountData', JSON.stringify(initialData));
-            localStorage.setItem('highScores', JSON.stringify(initialData));
-            setAccountData(initialData);
-            setHighScores(initialData);
-        }
+        fetchHighScores();
+
     }, []);
 
     const leaderBoard = [];
@@ -90,7 +86,7 @@ export function LandingPage({username, accountData, setAccountData, highScores, 
           leaderBoard.push(
             <tr key={i}>
                 <td>{i+1}</td>
-                <td>{score.name}</td>
+                <td>{score.username}</td>
                 <td>{score.clicks}</td>
             </tr>
           );

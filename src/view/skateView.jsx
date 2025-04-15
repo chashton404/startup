@@ -45,7 +45,7 @@ function ErrorModal({ isOpen, onCancel}) {
 
 }
 
-export function SkateView({accountData, setAccountData}) {
+export function SkateView() {
 
     const [skates, setSkates] = React.useState([]);
 
