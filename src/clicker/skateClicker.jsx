@@ -4,53 +4,53 @@ import { RollerSkate } from '../../lib/originalRollerskate';
 
 export function SkateClicker({accountData, setAccountData, highScores, setHighScores}) {
 
-    // Declare the click state variable and the username
-    const [count, setCount] = React.useState(0);
-    const user = localStorage.getItem('username');
-    let existingUserIndex = accountData.findIndex((accountData) => accountData.name === user);
-    const localEquippedSkate = accountData[existingUserIndex].equippedSkate;
+    const [equippedSkate, setEquippedSkate] = React.useState();
+    const [userScore, setUserScore] = React.useState(0);
 
-    // Find if user already exists
-    React.useEffect(() => {     
-        // Existing user: set count to their stored score
-        setCount(accountData[existingUserIndex].clicks);
-        localStorage.setItem('count', accountData[existingUserIndex].clicks);
-    }, [user]);
-    
-    function skateClicked() {
-        let temporaryCount = count + 1;
-        setCount(temporaryCount);
-        localStorage.setItem('count', temporaryCount)
-        updateScoresLocal(temporaryCount);
-    }
+    React.useEffect(() => {
+        async function fetchEquippedSkateAndScore() {
+            const skateResponse = await fetch(`api/getEquippedSkate`, {
+                method: 'get',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            });
+            const data = await skateResponse.json();
+            setEquippedSkate(data);
 
-    async function updateScoresLocal(temporaryCount) {
-
-        // Create a new score object
-        const newScore = {name: localStorage.getItem('username'), clicks: temporaryCount, skates: accountData[existingUserIndex].skates, equippedSkate: accountData[existingUserIndex].equippedSkate};
-
-        // Get current scores from localStorage
-        let localScores = JSON.parse(localStorage.getItem('accountData'));
-
-        if (newScore.clicks > accountData[existingUserIndex].clicks) {
-            localScores[existingUserIndex] = newScore;
+            const scoreResponse = await fetch(`api/getUserScore`, {
+                method: 'get',
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            });
+            if (scoreResponse.status === 200) {
+                const scoreData = await scoreResponse.json();
+                setUserScore(scoreData.userScore);
+                console.log(userScore);
+            }
         }
 
-        // Sort the scores array
-        localScores.sort((a, b) => b.clicks - a.clicks);
+        fetchEquippedSkateAndScore();
+    }, []);
 
-        // Get the top 10 scores and set them equal to the highScores array, map through them and only take the name and the clicks
-        let localHighScores = localScores.slice(0, 10).map((score) => {
-            return {name: score.name, clicks: score.clicks};}
-        );
+
     
-        // Always update localStorage
-        localStorage.setItem('accountData', JSON.stringify(localScores));
-        localStorage.setItem('highScores', JSON.stringify(localHighScores));
-        
-        // Update state with the new scores array
-        setAccountData([...localScores]); // Create a new array to ensure React detects the change
-        setHighScores([...localHighScores]);
+    async function skateClicked() {
+        // Call the skate clicked API
+        const response = await fetch(`api/skateClicked`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            setUserScore(data.userScore);
+        } else {
+            console.error('Error updating score:', await response.json());
+        }
     }
 
 
@@ -69,20 +69,26 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
                 </div>
                 <div onClick={skateClicked}  className="row w-100 p-3 align-items-center justify-content-center">
                     <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px", width: "350px"}}>
+                    {equippedSkate ? (
                         <RollerSkate
-                            topColor={localEquippedSkate.topColor}
-                            stripeColor={localEquippedSkate.stripeColor}
-                            baseColor={localEquippedSkate.baseColor}
-                            wheelColor= {localEquippedSkate.wheelColor}
-                            toeStopColor= {localEquippedSkate.toeStopColor}
+                            topColor={equippedSkate.topColor}
+                            stripeColor={equippedSkate.stripeColor}
+                            baseColor={equippedSkate.baseColor}
+                            wheelColor={equippedSkate.wheelColor}
+                            toeStopColor={equippedSkate.toeStopColor}
                             width="300px"
                             height="300px"
-                        /> 
+                        />
+                    ) : (
+                        <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    )}
                     </div>
                 </div>
                 <div className="row w-100 mb-3">
                     <h1>Clicks:</h1>
-                    <h1 style={{fontFamily: 'Syne'}}>{count}</h1>
+                    <h1 style={{fontFamily: 'Syne'}}>{userScore}</h1>
                 </div>
             </div>
         </main>
