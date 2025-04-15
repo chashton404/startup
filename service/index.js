@@ -192,6 +192,46 @@ apiRouter.get('/hasSkates', verifyAuth, async (req, res) => {
     res.status(200).send({ hasSkates });
 });
 
+// Function to Get the high scores
+apiRouter.get('/getHighScores', verifyAuth, async (req, res) => {
+    res.json(highScores);
+});
+
+// Function to for when the user clicks the skate
+apiRouter.post('/skateClicked', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (!user) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    const userIndex = scores.findIndex((score) => score.username === user.username);
+    if (userIndex === -1) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+    scores[userIndex].clicks += 1;
+
+    // Update the high scores
+    scores.sort((a, b) => b.clicks - a.clicks);
+    highScores = scores.slice(0, 10);
+
+    res.status(200).send({
+        userScore: scores[userIndex].clicks,
+        highScores,
+    });
+});
+
+// Function to get the user's score
+apiRouter.get('/getUserScore', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (!user) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    const userIndex = scores.findIndex((score) => score.username === user.username);
+    if (userIndex === -1) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+    res.status(200).send(scores[userIndex].clicks);
+});
+
 // Function to print users
 apiRouter.get('/users', async (req, res) => {
     res.send(users);
