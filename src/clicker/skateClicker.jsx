@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import { RollerSkate } from '../../lib/originalRollerskate';
 
-export function SkateClicker({accountData, setAccountData, highScores, setHighScores}) {
+export function SkateClicker() {
 
     const [equippedSkate, setEquippedSkate] = React.useState();
     const [userScore, setUserScore] = React.useState(0);
@@ -28,6 +28,8 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
                 const scoreData = await scoreResponse.json();
                 setUserScore(scoreData.userScore);
                 console.log(userScore);
+            } else {
+                console.log('Error fetching user score:', await scoreResponse.json());
             }
         }
 
@@ -88,7 +90,7 @@ export function SkateClicker({accountData, setAccountData, highScores, setHighSc
                 </div>
                 <div className="row w-100 mb-3">
                     <h1>Clicks:</h1>
-                    <h1 style={{fontFamily: 'Syne'}}>{userScore}</h1>
+                    <h1 style={{fontFamily: 'Syne'}}>{userScore ? (userScore) : "Loading"}</h1>
                 </div>
             </div>
         </main>

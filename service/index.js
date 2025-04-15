@@ -229,7 +229,7 @@ apiRouter.get('/getUserScore', verifyAuth, async (req, res) => {
     if (userIndex === -1) {
         return res.status(404).send({ msg: 'User not found' });
     }
-    res.status(200).send(scores[userIndex].clicks);
+    res.status(200).send({userScore: scores[userIndex].clicks});
 });
 
 // Function to print users
