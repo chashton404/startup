@@ -5,7 +5,7 @@ import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export function SkateDesign(accountData, setAccountData) {
+export function SkateDesign() {
     const [topColor, setTopColor] = React.useState('#231f20');
     const [stripeColor, setStripeColor] = React.useState('#231f20');
     const [baseColor, setBaseColor] = React.useState('#231f20');
