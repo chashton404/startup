@@ -14,7 +14,7 @@ let users = [];
 let scores = [];
 let highScores = [];
 let userSkates = [];
-let userEquippedSkate = [];
+let userEquippedSkates = [];
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
@@ -98,13 +98,9 @@ apiRouter.post('/addSkate', verifyAuth, async (req, res) => {
 
     // If the user has only one skate then that should be the equipped skate
     if (userSkates[userSkatesIndex].skates.length === 1) {
-        userEquippedSkate[userSkatesIndex].skateName = skate.skateName;
-        userEquippedSkate[userSkatesIndex].topColor = skate.topColor;
-        userEquippedSkate[userSkatesIndex].stripeColor = skate.stripeColor;
-        userEquippedSkate[userSkatesIndex].baseColor = skate.baseColor;
-        userEquippedSkate[userSkatesIndex].wheelColor = skate.wheelColor;
-        userEquippedSkate[userSkatesIndex].toeStopColor = skate.toeStopColor;
-        userEquippedSkate[userSkatesIndex].skateStatus = 'equipped';
+        userSkates[userSkatesIndex].skates[0].skateStatus = 'equipped';
+        userEquippedSkates[userSkatesIndex].skate = userSkates[userSkatesIndex].skates[0];
+        userEquippedSkates[userSkatesIndex].skate.skateStatus = 'equipped';
     }
 
     return res.status(200).send({ msg: 'Skate added successfully' });
@@ -123,27 +119,63 @@ apiRouter.get('/getSkates', verifyAuth, async (req, res) => {
 // Function to Get the user's equipped skate
 apiRouter.get('/getEquippedSkate', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
+    const userEquippedSkatesIndex = userEquippedSkates.findIndex((userSkate) => userSkate.username === user.username);
+    if (userEquippedSkatesIndex === -1) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+    res.send(userEquippedSkates[userEquippedSkatesIndex].skate);
+});
+
+// Function to Equip a skate
+apiRouter.post('/equipSkate', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
     const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
     if (userSkatesIndex === -1) {
         return res.status(404).send({ msg: 'User not found' });
     }
-    res.send(userEquippedSkate[userSkatesIndex]);
-});
+
+    const index = req.body.index;
+
+    const userSkateData = userSkates[userSkatesIndex].skates;
+    const newSkates = userSkateData.map((skate, i) => {
+        if (i === index) {
+            return {...skate, skateStatus: 'equipped'};
+        } else {
+            return {...skate, skateStatus: 'not equipped'};
+        }
+    });
+
+    userSkates[userSkatesIndex].skates = newSkates;
+    const equippedSkate = userSkates[userSkatesIndex].skates[index];
+    userEquippedSkates[userSkatesIndex].skate = equippedSkate;
+    res.send({ msg: 'Skate equipped successfully', skates: newSkates})
+    
+})
+
+//Function to Delete a skate
+apiRouter.post('/deleteSkate', verifyAuth, async (req, res) => {
+    //find the user's skates array
+    const user = await findUser('token', req.cookies[authCookieName]);
+    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
+    if (userSkatesIndex === -1) {
+        return res.status(404).send({msg: 'User not found'});
+    }
+
+    const skatesArray = userSkates[userSkatesIndex].skates;
+
+    const { index } = req.body;
+    if (index < 0 || index >= skatesArray.length) {
+        return res.status(400).send({ msg: 'Invalid skate index' });
+    }
+
+    skatesArray.splice(index, 1);
+
+    res.status(200).send({ msg: 'Skate deleted successfully', skates: skatesArray });
+})
 
 // Function to print users
 apiRouter.get('/users', async (req, res) => {
     res.send(users);
-});
-
-// Get User Data
-apiRouter.get('/userdata', async (req, res) => {
-    res.send(accountData);
-});
-
-// Submit User Data
-apiRouter.post('/userdata', async (req, res) => {
-    accountData = updateScores(req.body);
-    res.send(accountData);
 });
 
 // Simple root route
@@ -185,15 +217,17 @@ async function createUser(username, password) {
 
     const equippedSkate = {
         username: username,
-        skateName: 'null',
-        topColor: 'null',
-        stripeColor: 'null',
-        baseColor: 'null',
-        wheelColor: 'null',
-        toeStopColor: 'null',
-        skateStatus: 'not equipped'
+        skate: {
+            skateName: 'null',
+            topColor: 'null',
+            stripeColor: 'null',
+            baseColor: 'null',
+            wheelColor: 'null',
+            toeStopColor: 'null',
+            skateStatus: 'not equipped'
+        }     
     }
-    userEquippedSkate.push(equippedSkate)
+    userEquippedSkates.push(equippedSkate)
 
     return user;
 }

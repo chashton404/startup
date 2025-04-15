@@ -2,6 +2,8 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import { RollerSkate } from '../../lib/Rollerskate';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './modal.css';
 
@@ -62,10 +64,6 @@ export function SkateView({accountData, setAccountData}) {
         fetchSkates();
     }, []);
 
-    let localAccountData = JSON.parse(localStorage.getItem('accountData'));
-    const existingUserIndex = localAccountData.findIndex((localAccountData) => localAccountData.name === localStorage.getItem('username'));
-
-
     const [confirmOpenDeleteModal, setConfirmOpenDeleteModal] = React.useState(false);
     const [errorModalOpen, setErrorModalOpen] = React.useState(false);
     const [skateToDelete, setSkateToDelete] = React.useState(null);
@@ -75,11 +73,39 @@ export function SkateView({accountData, setAccountData}) {
         setConfirmOpenDeleteModal(true);
     }
 
-    function confirmDelete() {
-        const newSkates = skates.filter((skate, index) => index !== skateToDelete);
-        setSkates(newSkates);
-        setConfirmOpenDeleteModal(false);
-        setSkateToDelete(null);
+    async function confirmDelete() {
+        // Call the API to delete the skate
+        const response = await fetch(`api/deleteSkate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify({ index: skateToDelete }),
+        })
+
+        if (response.status === 200) {
+            const data = await response.json();
+            setSkates(data.skates);
+            setConfirmOpenDeleteModal(false);
+            setSkateToDelete(null);
+            toast.success('Skate deleted successfully!', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        } else {
+            toast.error('An unexpected error occurred while deleting the skate.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+            });
+        }
     }
 
     function cancelDelete() {
@@ -95,23 +121,37 @@ export function SkateView({accountData, setAccountData}) {
         setErrorModalOpen(false);
     }
     
-    function equipSkate(index) {
-
-        const newSkates = skates.map((skate, i) => {
-            if (i === index) {
-                return {...skate, skateStatus: 'equipped'};
-            } else {
-                return {...skate, skateStatus: 'not equipped'};
-            }
-        });
-
-        setSkates(newSkates);
-        localAccountData[existingUserIndex].skates = newSkates;
-        localAccountData[existingUserIndex].equippedSkate = newSkates[index];
-        localStorage.setItem('accountData', JSON.stringify(localAccountData));
-        setAccountData(localAccountData);
-
-        
+    async function equipSkate(index) {
+        // Call the API to equip the skate
+        const response = await fetch(`api/equipSkate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify({ index }),
+        })
+        if (response.status === 200) {
+            const data = await response.json();
+            setSkates(data.skates);
+            toast.success('Skate equipped successfully!', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+        }
+        else {
+            toast.error('An unexpected error occurred while equipping the skate.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+            });
+        }   
     }
     
 return (
