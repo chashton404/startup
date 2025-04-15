@@ -187,3 +187,18 @@ h3 {
   text-align: center;
 }
 
+.skate-bounce {
+  animation: bounce 150ms ease-in-out;
+}
+
+@keyframes bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.no-select {
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none;     /* IE 10+ */
+}

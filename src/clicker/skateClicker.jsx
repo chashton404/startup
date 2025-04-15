@@ -6,6 +6,7 @@ export function SkateClicker() {
 
     const [equippedSkate, setEquippedSkate] = React.useState();
     const [userScore, setUserScore] = React.useState(0);
+    const [isClicked, setIsClicked] = React.useState(false);
 
     React.useEffect(() => {
         async function fetchEquippedSkateAndScore() {
@@ -39,6 +40,9 @@ export function SkateClicker() {
 
     
     async function skateClicked() {
+
+        setIsClicked(true);
+        setTimeout(() =>(setIsClicked(false)), 150);
         // Call the skate clicked API
         const response = await fetch(`api/skateClicked`, {
             method: 'POST',
@@ -69,7 +73,7 @@ export function SkateClicker() {
                         <h2 className="justify-content-center" style={{ textAlign: 'center' }}>Click the Skate to increase your score and become the top skater!</h2>
                     </div>  
                 </div>
-                <div onClick={skateClicked}  className="row w-100 p-3 align-items-center justify-content-center">
+                <div onClick={skateClicked}  className={`row w-100 p-3 align-items-center justify-content-center no-select ${isClicked ? 'skate-bounce' : ''}`}>
                     <div style={{border: "2px solid black", backgroundColor: "white", borderRadius: "15px", padding: "20px", width: "350px"}}>
                     {equippedSkate ? (
                         <RollerSkate
@@ -89,7 +93,7 @@ export function SkateClicker() {
                     </div>
                 </div>
                 <div className="row w-100 mb-3">
-                    <h1>Clicks:</h1>
+                    <h1 className={"no-select"}>Clicks:</h1>
                     <h1 style={{fontFamily: 'Syne'}}>{userScore ? (userScore) : "Loading"}</h1>
                 </div>
             </div>
