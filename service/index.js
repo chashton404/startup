@@ -56,7 +56,7 @@ apiRouter.post('/auth/login', async (req, res) => {
 });
   
 // DeleteAuth logout a user
-apiRouter.delete('/auth/logout', async (req, res) => {
+apiRouter.post('/auth/logout', async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
       delete user.token;
