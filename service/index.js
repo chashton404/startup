@@ -173,6 +173,25 @@ apiRouter.post('/deleteSkate', verifyAuth, async (req, res) => {
     res.status(200).send({ msg: 'Skate deleted successfully', skates: skatesArray });
 })
 
+// Function to Check if a User has Skates
+apiRouter.get('/hasSkates', verifyAuth, async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (!user) {
+        return res.status(401).send({msd: unauthorized});
+    }
+    // Find the user's skates array
+    const userSkatesEntry = userSkates.find((entry) => entry.username === user.username);
+    if (!userSkatesEntry) {
+        return res.status(404).send({ msg: 'User skates not found' });
+    }
+
+    // Check if the skates array has at least one skate
+    const hasSkates = userSkatesEntry.skates.length > 0;
+
+    // Respond with the boolean value
+    res.status(200).send({ hasSkates });
+});
+
 // Function to print users
 apiRouter.get('/users', async (req, res) => {
     res.send(users);

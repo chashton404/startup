@@ -1,6 +1,7 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 //We make an error modal for the user so that they can't access skateView and skateClicker if they don't have any skates
 function ErrorModal({ isOpen, onCancel}) {
@@ -22,6 +23,24 @@ function ErrorModal({ isOpen, onCancel}) {
 
 }
 
+async function checkHasSkates() {
+    const response = await fetch('/api/hasSkates', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (response.status === 200) {
+        const data = await response.json();
+        console.log(data.hasSkates);
+        return data.hasSkates; // Returns true or false
+    } else {
+        console.error('Error checking skates:', await response.json());
+        return false;
+    }
+}
+
 export function LandingPage({username, accountData, setAccountData, highScores, setHighScores}) {
     //we get the account data from local storage
     let localAccountData = [];
@@ -31,8 +50,18 @@ export function LandingPage({username, accountData, setAccountData, highScores, 
         localAccountData = JSON.parse(accountDataText);
     }
 
-    //we check if the user already exists, returns -1 if they don't
-    let existingUserIndex = localAccountData.findIndex((accountData) => accountData.name === username);
+    // Code to handle the clicks
+    const navigate = useNavigate();
+
+    const handleClick = async (route) => {
+        const hasSkates = await checkHasSkates();
+        if (!hasSkates) {
+            openErrorModal();
+        } else {
+            navigate(route);
+        }
+    };
+
 
     //we create a react state variable for the error modal
     let [errorModalOpen, setErrorModalOpen] = React.useState(false);
@@ -54,17 +83,6 @@ export function LandingPage({username, accountData, setAccountData, highScores, 
             setHighScores(initialData);
         }
     }, []);
-
-    React.useEffect(() => {
-        //If the user doesn't exist then create a new "user" and intitalize their name as username, their clicks as 0, and their skates as 0
-
-        if (existingUserIndex === -1) {
-            const newUser = {name: username, clicks: 0, skates: [], equippedSkate: {skateName: 'null', topColor: 'null', stripeColor: 'null', baseColor: 'null', wheelColor: 'null', toeStopColor: 'null', skateStatus: 'not equipped'}};
-            localAccountData.push(newUser);
-            setAccountData([...localAccountData]);
-            localStorage.setItem('accountData', JSON.stringify(localAccountData));
-        }
-    }, [username]);
 
     const leaderBoard = [];
     if (highScores.length) {
@@ -113,20 +131,10 @@ return (
                             <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
                         </div>
                         <div className="row w-100 mb-3">
-                            <NavLink to="/skateView" className="landing-page-button" onClick={(e) => {
-                                if (accountData[existingUserIndex]?.skates?.length === 0) {
-                                    e.preventDefault();
-                                    openErrorModal();
-                                }
-                            }}>VIEW SKATES</NavLink>
+                            <button className="landing-page-button" style={{ border: 'none' }} onClick={() => handleClick('/skateView')}>VIEW SKATES</button>
                         </div>
                         <div className="row w-100 mb-3">
-                            <NavLink to="/skateClicker" className="landing-page-button"onClick={(e) => {
-                                if (accountData[existingUserIndex]?.skates?.length === 0) {
-                                    e.preventDefault();
-                                    openErrorModal();
-                                }
-                            }}>SKATE CLICKER</NavLink>
+                            <button className="landing-page-button" style={{ border: 'none' }} onClick={() => handleClick('/skateClicker')}>SKATE CLICKER</button>
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/about" className="landing-page-button">ABOUT</NavLink>
