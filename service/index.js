@@ -6,7 +6,7 @@ const app = express();
 
 const authCookieName = 'token';
 
-const PORT = 3000;
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 //lets create the arrays that we want to have on the backend
 //eventually this will all be in a database
@@ -309,6 +309,6 @@ function setAuthCookie(res, authToken) {
   }
 
 // Start listening on server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
