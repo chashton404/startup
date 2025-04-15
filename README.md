@@ -106,11 +106,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - I created the service folder that 
+- [x] **Static middleware for frontend** - There is middleware to verify that the user is logged in before using an endpoint
+- [x] **Calls to third party endpoints** - Included a button to get Chuck Norris Jokes :)
+- [x] **Backend service endpoints** - I created several backend endpoints to get and modify the data such as clicks, skates, equipped skates, and leaderboard
+- [x] **Frontend calls service endpoints** - The front end calls those endpoints
 
 ## 🚀 DB/Login deliverable
 
