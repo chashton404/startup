@@ -146,7 +146,7 @@ export function LandingPage({username}) {
 return (
     <main style={{ height: 'calc(100vh - 200px)', position: 'relative'}}>
         <ErrorModal isOpen={errorModalOpen} onCancel={closeModal} />
-        <button className="position-absolute top-0 end-0 mt-3 me-3"
+        <button className="position-absolute top-0 end-0 mt-3 me-3 btn signin-button-primary"
         style={{ fontFamily: 'Syne', zIndex: 1 }} onClick={logoutUser}>Logout</button>
         <div className="container mt-4">
             <div className="row">
