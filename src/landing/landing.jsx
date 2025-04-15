@@ -2,6 +2,8 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //We make an error modal for the user so that they can't access skateView and skateClicker if they don't have any skates
 function ErrorModal({ isOpen, onCancel}) {
@@ -99,9 +101,39 @@ export function LandingPage({username}) {
         );
     }
 
-    function logoutUser() {
+    async function logoutUser() {
+
         localStorage.removeItem('username');
+        const response = await fetch(`/api/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }); 
+        if (response.status === 204){
+            navigate('/');
+            toast.success('Logged out successfully', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+            });
+        } else {
+            console.error('Error logging out:', await response.json());
+            toast.error('An unexpected error occurred while logging out.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+            });
+        }   
+
     }
+
 
     function openErrorModal() {
         setErrorModalOpen(true);
@@ -114,8 +146,8 @@ export function LandingPage({username}) {
 return (
     <main style={{ height: 'calc(100vh - 200px)', position: 'relative'}}>
         <ErrorModal isOpen={errorModalOpen} onCancel={closeModal} />
-        <NavLink to="/login" className="position-absolute top-0 end-0 mt-3 me-3"
-        style={{ fontFamily: 'Syne', zIndex: 1 }} onClick={logoutUser}>Logout</NavLink>
+        <button className="position-absolute top-0 end-0 mt-3 me-3"
+        style={{ fontFamily: 'Syne', zIndex: 1 }} onClick={logoutUser}>Logout</button>
         <div className="container mt-4">
             <div className="row">
                 <div className="col-md-6">
