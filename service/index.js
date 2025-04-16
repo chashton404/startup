@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const app = express();
+const path = require('path');
 
 const authCookieName = 'token';
 
@@ -239,7 +240,11 @@ apiRouter.get('/users', async (req, res) => {
 
 // Simple root route
 app.get('/', (req, res) => {
-    res.json({ msg: 'Rollerskate Service' });
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/{*any}', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
   
 // Catch-all route
