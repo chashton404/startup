@@ -45,6 +45,8 @@ async function checkHasSkates() {
 
 export function LandingPage({username}) {
 
+    const [storedUsername, setStoredUsername] = React.useState(() => localStorage.getItem('userName'));
+
     // Code to handle navigation
     const navigate = useNavigate();
 
@@ -153,7 +155,7 @@ return (
                 <div className="col-md-6">
                     <div className="container">
                         <div className="row w-100 pb-3">
-                            <h2>Welcome, {username}!</h2>
+                            <h2>Welcome, {storedUsername}!</h2>
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
