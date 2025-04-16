@@ -55,11 +55,9 @@ export function SkateDesign() {
             <div className="row pt-5">
                 <div className="col-md-6 justify-content-center">
                     <div className="row-md-2">
-                        <form action="/skateView" method="get">
-                            <div>  
-                                <input type="text" name="username" placeholder="Skate Name" className="skate-name-input" onChange={handleSkateNameChange}/>
-                            </div>
-                        </form>
+                        <div>  
+                            <input type="text" name="username" placeholder="Skate Name" className="skate-name-input" onChange={handleSkateNameChange}/>
+                        </div>
                     </div>
                     <div className="row-md-2 width: 100%">
                         <div className="row-md-6">
