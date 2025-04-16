@@ -23,9 +23,7 @@ export default function App() {
         <header>
           <div className="container">
             <header className="d-flex flex-wrap justify-content-center pt-3">
-              <a href="landingPageBootstrap.html" className="d-flex align-items-center mb-0 text-decoration-none">
                 <h1>ROLLERSKATE RACING</h1>
-              </a>
             </header>
           </div>
           <div className="divider"></div>
