@@ -35,7 +35,6 @@ async function checkHasSkates() {
 
     if (response.status === 200) {
         const data = await response.json();
-        console.log(data.hasSkates);
         return data.hasSkates; // Returns true or false
     } else {
         console.error('Error checking skates:', await response.json());
