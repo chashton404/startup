@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const app = express();
 const path = require('path');
+const DB = require('./database.js');
 
 const authCookieName = 'token';
 
@@ -11,11 +12,7 @@ const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 //lets create the arrays that we want to have on the backend
 //eventually this will all be in a database
-let users = [];
-let scores = [];
 let highScores = [];
-let userSkates = [];
-let userEquippedSkates = [];
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
@@ -36,7 +33,7 @@ apiRouter.post('/auth/create', async (req, res) => {
     if (await findUser('username', req.body.username)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
-        const user = await createUser(req.body.username, req.body.password);
+        const user = await DB.createUser(req.body.username, req.body.password);
         setAuthCookie(res, user.token);
         res.send({ username: user.username });
     }
@@ -48,6 +45,8 @@ apiRouter.post('/auth/login', async (req, res) => {
     if (user) {
       if (await bcrypt.compare(req.body.password, user.password)) {
         user.token = uuid.v4();
+        // Update the user in the database
+        await DB.updateUser(user);
         setAuthCookie(res, user.token);
         res.send({ username: user.username });
         return;
@@ -61,6 +60,8 @@ apiRouter.post('/auth/logout', async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
       delete user.token;
+      // Update the user in the database
+      await DB.updateUser(user);
     }
     res.clearCookie(authCookieName);
     res.status(204).end();
@@ -74,35 +75,35 @@ const verifyAuth = async (req, res, next) => {
     } else {
       res.status(401).send({ msg: 'Unauthorized' });
     }
-  };
+};
 
 //AddSkate used to add a recently designed skate to the user's skates
 apiRouter.post('/addSkate', verifyAuth, async (req, res) => {
-    const user = await findUser('token', req.cookies[authCookieName]);
-
-    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
-    if (userSkatesIndex === -1) {
-        return res.status(404).send({ msg: 'User not found' });
-    }
-
+    const userName = req.body.userName;
     const skate = {
-        skateName: req.body.skateName,
-        topColor: req.body.topColor,
-        stripeColor: req.body.stripeColor,
-        baseColor: req.body.baseColor,
-        wheelColor: req.body.wheelColor,
-        toeStopColor: req.body.toeStopColor,
-        skateStatus: req.body.skateStatus
+        skateName: req.body.newSkate.skateName,
+        topColor: req.body.newSkate.topColor,
+        stripeColor: req.body.newSkate.stripeColor,
+        baseColor: req.body.newSkate.baseColor,
+        wheelColor: req.body.newSkate.wheelColor,
+        toeStopColor: req.body.newSkate.toeStopColor,
+        skateStatus: req.body.newSkate.skateStatus
     }
     
-    userSkates[userSkatesIndex].skates.push(skate);
+    // Push the skate onto the user's skates database
+    DB.addNewUserSkate(userName, skate);
 
-    // If the user has only one skate then that should be the equipped skate
-    if (userSkates[userSkatesIndex].skates.length === 1) {
-        userSkates[userSkatesIndex].skates[0].skateStatus = 'equipped';
-        userEquippedSkates[userSkatesIndex].skate = userSkates[userSkatesIndex].skates[0];
-        userEquippedSkates[userSkatesIndex].skate.skateStatus = 'equipped';
-    }
+    // Get the updated skates array from the database
+    const userSkates = await DB.getUserSkates(userName);
+
+    // If the user only has one skate, set it to equipped
+    if (userSkates.skates.length === 1) {
+        userSkates.skates[0].skateStatus = 'equipped';
+        await DB.updateUserSkates(userName, userSkates);
+
+        const skateToBeEquipped = userSkates.skates[0];
+        await DB.equipSkate(userName, skateToBeEquipped);
+    }  
 
     return res.status(200).send({ msg: 'Skate added successfully' });
 })
@@ -110,35 +111,46 @@ apiRouter.post('/addSkate', verifyAuth, async (req, res) => {
 // Function to Get the user's skates
 apiRouter.get('/getSkates', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
-    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
-    if (userSkatesIndex === -1) {
-        return res.status(404).send({ msg: 'User not found' });
+
+    if (!user) {
+        return res.status(401).send({ msg: 'User not found' });
     }
-    res.send(userSkates[userSkatesIndex].skates);
+    userName = user.userName;
+    const userSkatesDoc = await DB.getUserSkates(userName);
+    const userSkates = userSkatesDoc.skates
+
+    res.send(userSkates);
 });
 
 // Function to Get the user's equipped skate
 apiRouter.get('/getEquippedSkate', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
-    const userEquippedSkatesIndex = userEquippedSkates.findIndex((userSkate) => userSkate.username === user.username);
-    if (userEquippedSkatesIndex === -1) {
-        return res.status(404).send({ msg: 'User not found' });
+    const userName = user.userName;
+
+    if (!user) {
+        return res.status(401).send({ msg: 'User not found' });
     }
-    res.send(userEquippedSkates[userEquippedSkatesIndex].skate);
+
+    // Get the User's Equipped Skate from the database
+    const userEquippedSkate = await DB.getUserEquippedSkate(userName).skate;
+
+    res.send(userEquippedSkate);
 });
 
 // Function to Equip a skate
 apiRouter.post('/equipSkate', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
-    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
-    if (userSkatesIndex === -1) {
-        return res.status(404).send({ msg: 'User not found' });
-    }
-
+    const userName = user.userName;
     const index = req.body.index;
 
-    const userSkateData = userSkates[userSkatesIndex].skates;
-    const newSkates = userSkateData.map((skate, i) => {
+    if (!user) {
+        return res.status(401).send({ msg: 'User not found' });
+    }
+
+    // Get the User's Skates array from the database, and loop over it to set the correct skate to equipped
+    const userSkatesDoc = await DB.getUserSkates(userName);
+    const userSkates = userSkatesDoc.skates
+    const newSkates = userSkates.map((skate, i) => {
         if (i === index) {
             return {...skate, skateStatus: 'equipped'};
         } else {
@@ -146,48 +158,54 @@ apiRouter.post('/equipSkate', verifyAuth, async (req, res) => {
         }
     });
 
-    userSkates[userSkatesIndex].skates = newSkates;
-    const equippedSkate = userSkates[userSkatesIndex].skates[index];
-    userEquippedSkates[userSkatesIndex].skate = equippedSkate;
-    res.send({ msg: 'Skate equipped successfully', skates: newSkates})
-    
+    // Update the user's skates in the database
+    await DB.updateUserSkates(userName, newSkates);
+
+    // Update the user's equipped skate in the database
+    await DB.equipSkate(userName, newSkates[index]);
+
+    res.send({ msg: 'Skate equipped successfully', skates: newSkates})  
 })
 
 //Function to Delete a skate
 apiRouter.post('/deleteSkate', verifyAuth, async (req, res) => {
     //find the user's skates array
     const user = await findUser('token', req.cookies[authCookieName]);
-    const userSkatesIndex = userSkates.findIndex((userSkate) => userSkate.username === user.username);
-    if (userSkatesIndex === -1) {
-        return res.status(404).send({msg: 'User not found'});
+    const userName = user.userName;
+    const index = req.body.index;
+
+    if (!user) {
+        return res.status(401).send({ msg: 'User not found' });
     }
 
-    const skatesArray = userSkates[userSkatesIndex].skates;
+    const userSkatesDoc = await DB.getUserSkates(userName);
+    const userSkates = userSkatesDoc.skates
 
-    const { index } = req.body;
-    if (index < 0 || index >= skatesArray.length) {
+    if (index < 0 || index >= userSkates.length) {
         return res.status(400).send({ msg: 'Invalid skate index' });
     }
 
-    skatesArray.splice(index, 1);
+    userSkates.splice(index, 1);
 
-    res.status(200).send({ msg: 'Skate deleted successfully', skates: skatesArray });
+    // Update the user's skates in the database
+    await DB.updateUserSkates(userName, userSkates);
+
+    res.status(200).send({ msg: 'Skate deleted successfully', skates: userSkates });
 })
 
 // Function to Check if a User has Skates
 apiRouter.get('/hasSkates', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
+    const userName = user.userName;
     if (!user) {
-        return res.status(401).send({msd: unauthorized});
+        return res.status(401).send({msg: 'unauthorized'});
     }
-    // Find the user's skates array
-    const userSkatesEntry = userSkates.find((entry) => entry.username === user.username);
-    if (!userSkatesEntry) {
-        return res.status(404).send({ msg: 'User skates not found' });
-    }
+    // Find the user's skates array from the database
+    const userSkatesDoc = await DB.getUserSkates(userName);
+    const userSkates = userSkatesDoc.skates;
 
     // Check if the skates array has at least one skate
-    const hasSkates = userSkatesEntry.skates.length > 0;
+    const hasSkates = userSkates.length > 0;
 
     // Respond with the boolean value
     res.status(200).send({ hasSkates });
@@ -195,42 +213,37 @@ apiRouter.get('/hasSkates', verifyAuth, async (req, res) => {
 
 // Function to Get the high scores
 apiRouter.get('/getHighScores', verifyAuth, async (req, res) => {
-    res.json(highScores);
+    const highScoresDoc = await DB.getHighScores();
+    res.json(highScoresDoc?.scores || []);
 });
 
-// Function to for when the user clicks the skate
+// Function for when the user clicks the skate
 apiRouter.post('/skateClicked', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
+    const userName = user.userName;
     if (!user) {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
-    const userIndex = scores.findIndex((score) => score.username === user.username);
-    if (userIndex === -1) {
-        return res.status(404).send({ msg: 'User not found' });
-    }
-    scores[userIndex].clicks += 1;
 
-    // Update the high scores
-    scores.sort((a, b) => b.clicks - a.clicks);
-    highScores = scores.slice(0, 10);
+    const newScore = await incrementScore(userName);
 
-    res.status(200).send({
-        userScore: scores[userIndex].clicks,
-        highScores,
-    });
+    res.status(200).send({userScore: newScore});
 });
 
 // Function to get the user's score
 apiRouter.get('/getUserScore', verifyAuth, async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
+    const userName = user.userName
     if (!user) {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
-    const userIndex = scores.findIndex((score) => score.username === user.username);
-    if (userIndex === -1) {
-        return res.status(404).send({ msg: 'User not found' });
+
+    const userDoc = await getUserScore(userName);
+    if (!userDoc) {
+        return res.status(404).send({ msg: 'User score not found' });
     }
-    res.status(200).send({userScore: scores[userIndex].clicks});
+    
+    res.status(200).send({userScore: userDoc.clicks});
 });
 
 // Function to print users
@@ -256,52 +269,15 @@ app.use((req, res) => {
 
 // FUNCTIONS FOR THE API CALLS
 
-//Function to create a new user
-async function createUser(username, password) {
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    const user = {
-        username: username,
-        password: passwordHash,
-        token: uuid.v4()
-    }
-    users.push(user);
-
-    const score = {
-        username: username,
-        clicks: 0
-    }
-    scores.push(score);
-
-    const skates = {
-        username: username,
-        skates: []
-    }
-    userSkates.push(skates);
-
-    const equippedSkate = {
-        username: username,
-        skate: {
-            skateName: 'null',
-            topColor: 'null',
-            stripeColor: 'null',
-            baseColor: 'null',
-            wheelColor: 'null',
-            toeStopColor: 'null',
-            skateStatus: 'not equipped'
-        }     
-    }
-    userEquippedSkates.push(equippedSkate)
-
-    return user;
-}
-
 //Function to find a user
-async function findUser(key, value) {
+async function findUser(field, value) {
     if (!value) {
         return null;
     }
-    return users.find ((user) => user[key] === value);
+    if (field === 'token') {
+        return DB.getUserByToken(value);
+    }
+    return DB.getUser(value);
 }
 
 // setAuthCookie in the HTTP response

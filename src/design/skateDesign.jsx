@@ -25,9 +25,10 @@ export function SkateDesign() {
 
     async function addSkate(topColor, stripeColor, baseColor, wheelColor, toeStopColor) {
         let newSkate = { skateName: skateNameLocal, topColor: topColor, stripeColor: stripeColor, baseColor: baseColor, wheelColor: wheelColor, toeStopColor: toeStopColor, skateStatus: 'not equipped' };
+        let userName = localStorage.getItem('userName');
         const response=await fetch(`api/addSkate`, {
             method: 'post', 
-            body: JSON.stringify(newSkate),
+            body: JSON.stringify({userName: userName, newSkate: newSkate}),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
