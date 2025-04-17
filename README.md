@@ -126,8 +126,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - I implemented the live leaderboard on the back end
+- [x] **Frontend makes WebSocket connection** - The connection is then made on the frontend
+- [x] **Data sent over WebSocket connection** - Whenever the user clicks the skate the message is sent to the client
+- [x] **WebSocket data displayed** - That data/message is then visible in the leaderboard on the landing page
+- [x] **Application is fully functional** - The APP WORKS!!! WOOT WOOT PARTY TIME!! TIME TO CELEBR8
