@@ -43,9 +43,9 @@ async function checkHasSkates() {
     }
 }
 
-export function LandingPage({username}) {
+export function LandingPage({userName}) {
 
-    const [storedUsername, setStoredUsername] = React.useState(() => localStorage.getItem('userName'));
+    const [storedUserName, setStoredUserName] = React.useState(() => localStorage.getItem('userName'));
 
     // Code to handle navigation
     const navigate = useNavigate();
@@ -90,7 +90,7 @@ export function LandingPage({username}) {
           leaderBoard.push(
             <tr key={i}>
                 <td>{i+1}</td>
-                <td>{score.username}</td>
+                <td>{score.userName}</td>
                 <td>{score.clicks}</td>
             </tr>
           );
@@ -105,7 +105,7 @@ export function LandingPage({username}) {
 
     async function logoutUser() {
 
-        localStorage.removeItem('username');
+        localStorage.removeItem('userName');
         const response = await fetch(`/api/auth/logout`, {
             method: 'POST',
             headers: {
@@ -155,7 +155,7 @@ return (
                 <div className="col-md-6">
                     <div className="container">
                         <div className="row w-100 pb-3">
-                            <h2>Welcome, {storedUsername}!</h2>
+                            <h2>Welcome, {storedUserName}!</h2>
                         </div>
                         <div className="row w-100 mb-3">
                             <NavLink to="/skateDesign" className="landing-page-button">DESIGN SKATE</NavLink>
