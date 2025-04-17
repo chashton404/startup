@@ -11,7 +11,6 @@ export function Login({setUserName}) {
 
     function handleUserNameChange(event) {
         setUserNameLocal(event.target.value);
-        console.log(userNameLocal);
     }
 
     function handlePasswordChange(event) {

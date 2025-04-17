@@ -28,9 +28,6 @@ export function SkateClicker() {
             if (scoreResponse.status === 200) {
                 const scoreData = await scoreResponse.json();
                 setUserScore(scoreData.userScore);
-                console.log(userScore);
-            } else {
-                console.log('Error fetching user score:', await scoreResponse.json());
             }
         }
 

@@ -111,8 +111,8 @@ async function updateHighScores(newHighScores) {
     await highScoresCollection.replaceOne({ _id: 'currentHighScores' },{ _id: 'currentHighScores', scores: newHighScores },{upsert: true});
 }
 
-async function equipUserSkate(username, index) {
-    const userSkatesDoc = await userSkatesCollection.findOne({ username });
+async function equipUserSkate(userName, index) {
+    const userSkatesDoc = await userSkatesCollection.findOne({ userName: userName });
     const skates = userSkatesDoc.skates;
 
     const newSkates = skates.map((skate, i) => ({
@@ -123,12 +123,12 @@ async function equipUserSkate(username, index) {
     const equippedSkate = newSkates[index];
 
     await userSkatesCollection.updateOne(
-        { username },
+        { userName },
         { $set: { skates: newSkates } }
     );
 
     await userEquippedSkatesCollection.updateOne(
-        { username },
+        { userName },
         { $set: { skate: equippedSkate } },
         { upsert: true }
     );

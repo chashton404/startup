@@ -104,7 +104,7 @@ apiRouter.post('/addSkate', verifyAuth, async (req, res) => {
         await DB.updateUserSkates(userName, userSkates);
 
         const skateToBeEquipped = userSkates.skates[0];
-        await DB.equipSkate(userName, skateToBeEquipped);
+        await DB.equipUserSkate(userName, skateToBeEquipped);
     }  
 
     return res.status(200).send({ msg: 'Skate added successfully' });
@@ -141,9 +141,9 @@ apiRouter.get('/getEquippedSkate', verifyAuth, async (req, res) => {
 });
 
 // Function to Equip a skate
-apiRouter.post('/equipSkate', verifyAuth, async (req, res) => {
-    const user = await DB.getUserByToken(req.cookies[authCookieName]);
-    const newSkates = await DB.equipUserSkate(user.username, req.body.index);
+apiRouter.post('/equipSkate', verifyAuth, async (req, res) => { 
+    const user = await findUser('token', req.cookies[authCookieName]);
+    const newSkates = await DB.equipUserSkate(user.userName, req.body.index);
     res.send({ msg: 'Skate equipped successfully', skates: newSkates });
 });
 
