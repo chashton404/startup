@@ -43,6 +43,10 @@ function getHighScores() {
     return highScoresCollection.findOne({ _id: 'currentHighScores' });
 }
 
+function getUserEquippedSkate(userName) {
+    return userEquippedSkatesCollection.findOne({ userName: userName });
+}
+
 async function createUser(userName, password) {
     const passwordHash = await bcrypt.hash(password, 10);
     const token = uuid.v4();
@@ -112,14 +116,18 @@ async function equipSkate(userName, skate) {
 }
 
 async function incrementScore(userName) {
-    const updated = await scoresCollection.findOneAndUpdate({ userName: userName },{ $inc: { clicks: 1 } },{ returnDocument: 'after' });
+    await scoresCollection.findOneAndUpdate({ userName: userName }, { $inc: { clicks: 1 } },{ returnDocument: 'after' });
 
-    //Update the Highscores in the database
+    // Update the Highscores in the database
     const newHighScores = await scoresCollection.find({}).sort({ clicks: -1 }).limit(10).toArray();
+  
     await updateHighScores(newHighScores);
-    
-    return updated.value.clicks;
-}
+
+    newScoreDoc = await getUserScore(userName);
+    newScore = newScoreDoc.clicks;
+  
+    return newScore;
+  }
 
 module.exports = {
     getUser,
@@ -127,6 +135,7 @@ module.exports = {
     getUserSkates,
     getHighScores,
     getUserScore,
+    getUserEquippedSkate,
     createUser,
     addHighScore,
     addNewUserSkate,

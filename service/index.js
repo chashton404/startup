@@ -136,7 +136,8 @@ apiRouter.get('/getEquippedSkate', verifyAuth, async (req, res) => {
     }
 
     // Get the User's Equipped Skate from the database
-    const userEquippedSkate = await DB.getUserEquippedSkate(userName).skate;
+    const userEquippedSkateDoc = await DB.getUserEquippedSkate(userName)
+    const userEquippedSkate = userEquippedSkateDoc.skate;
 
     res.send(userEquippedSkate);
 });
@@ -229,7 +230,7 @@ apiRouter.post('/skateClicked', verifyAuth, async (req, res) => {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
 
-    const newScore = await incrementScore(userName);
+    const newScore = await DB.incrementScore(userName);
 
     res.status(200).send({userScore: newScore});
 });
