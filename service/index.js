@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const app = express();
 const path = require('path');
 const DB = require('./database.js');
+const { liveLeaderboard } = require('./liveLeaderboard.js')
 
 const authCookieName = 'token';
 
@@ -12,7 +13,6 @@ const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 //lets create the arrays that we want to have on the backend
 //eventually this will all be in a database
-let highScores = [];
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
@@ -207,6 +207,9 @@ apiRouter.post('/skateClicked', verifyAuth, async (req, res) => {
     }
 
     const newScore = await DB.incrementScore(userName);
+    highScoresDoc = await DB.getHighScores();
+    highScores = highScoresDoc.scores;
+    broadcastHighScores(highScores);
 
     res.status(200).send({userScore: newScore});
 });
@@ -271,6 +274,8 @@ function setAuthCookie(res, authToken) {
   }
 
 // Start listening on server
-app.listen(port, () => {
+const httpService = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+const { broadcastHighScores } = liveLeaderboard(httpService);

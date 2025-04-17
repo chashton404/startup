@@ -1,6 +1,7 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
+import {useRef} from 'react'
 import { useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -81,6 +82,33 @@ export function LandingPage({userName}) {
         }
         fetchHighScores();
 
+    }, []);
+
+    const socketRef = useRef(null);
+
+    React.useEffect(() => {
+        const port = window.location.port;
+        const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+        socketRef.current = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+
+        socketRef.current.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'highScoresUpdate') {
+                setHighScores(data.highScores);
+            }
+        };
+
+        socketRef.current.onerror = (err) => {
+            console.error('WebSocket error:', err);
+        };
+
+        socketRef.current.onclose = () => {
+            console.log('WebSocket closed');
+        };
+
+        return () => {
+            socketRef.current?.close();
+        };
     }, []);
 
     const leaderBoard = [];
