@@ -6,24 +6,7 @@ import { NavLink } from "react-router-dom";
 
 
 export function AboutPage() {
-    const [msg, setMsg] = React.useState('...listening');
     const [joke, setJoke] = React.useState(''); 
-    const [error, setError] = React.useState('');
-
-    React.useEffect(() => {
-        const interval = setInterval(() => {
-            const names = ['bob', 'joe', 'sally', 'jane', 'jim', 'jill', 'jack', 'jenny', 'jacob', 'jessica'];
-            const verbs = ['ran', 'jumped', 'swam', 'flew'];
-            const adverbs = ['quickly', 'slowly', 'gracefully', 'awkwardly'];
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            const randomVerb = verbs[Math.floor(Math.random() * verbs.length)];
-            const randomAdverb = adverbs[Math.floor(Math.random() * adverbs.length)];
-            const newMsg = `${randomName} ${randomVerb} ${randomAdverb}`;
-            setMsg(newMsg);
-        }, 10000); // Change interval to 10 seconds (10000 ms)
-    
-        return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, []);
 
     const fetchJoke = () => {
         const url = "https://api.chucknorris.io/jokes/random?category=dev";
@@ -71,8 +54,6 @@ export function AboutPage() {
                 <p style={{textAlign: 'center'}}>
                     {joke}
                 </p>
-                <h3>Websocket Implementation goes here</h3>
-                <p style={{textAlign: 'center'}}> {msg} </p>
             </div>
         </main>
     );
