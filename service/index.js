@@ -29,29 +29,33 @@ app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
-    console.log('Creating user:', req.body.username);
-    if (await findUser('username', req.body.username)) {
+    console.log('Creating user:', req.body.userName);
+    if (await findUser('userName', req.body.userName)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
-        const user = await DB.createUser(req.body.username, req.body.password);
+        const user = await DB.createUser(req.body.userName, req.body.password);
         setAuthCookie(res, user.token);
-        res.send({ username: user.username });
+        res.send({ userName: user.userName });
     }
 });
   
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-    const user = await findUser('username', req.body.username);
+    const user = await findUser('userName', req.body.userName);
+    console.log('User found:', user);
+
     if (user) {
-      if (await bcrypt.compare(req.body.password, user.password)) {
-        user.token = uuid.v4();
-        // Update the user in the database
-        await DB.updateUser(user);
-        setAuthCookie(res, user.token);
-        res.send({ username: user.username });
-        return;
-      }
+        const passwordMatches = await bcrypt.compare(req.body.password, user.password);
+        console.log('Password matches?', passwordMatches);
+
+        if (passwordMatches) {
+            user.token = uuid.v4();
+            await DB.updateUser(user);
+            setAuthCookie(res, user.token);
+            return res.send({ userName: user.userName });
+        }
     }
+
     res.status(401).send({ msg: 'Unauthorized' });
 });
   
