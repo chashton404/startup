@@ -1,5 +1,7 @@
 const { MongoClient } = require('mongodb');
 const config = require('./dbConfig.json');
+const uuid = require('uuid');
+const bcrypt = require('bcryptjs');
 
 const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
 const client = new MongoClient(url);
@@ -41,28 +43,28 @@ function getHighScores() {
     return highScoresCollection.findOne({ _id: 'currentHighScores' });
 }
 
-async function createUser(username, password) {
+async function createUser(userName, password) {
     const passwordHash = await bcrypt.hash(password, 10);
-    const token = uuidv4();
+    const token = uuid.v4();
 
     const user = {
-        username,
+        userName,
         password: passwordHash,
         token
     };
 
     const score = {
-        username,
+        userName,
         clicks: 0
     };
 
     const skates = {
-        username,
+        userName,
         skates: []
     };
 
     const equippedSkate = {
-        username,
+        userName,
         skate: {
             skateName: null,
             topColor: null,
@@ -110,7 +112,7 @@ async function equipSkate(userName, skate) {
 }
 
 async function incrementScore(userName) {
-    const updated = await scoresCollection.findOneAndUpdate({ username: userName },{ $inc: { clicks: 1 } },{ returnDocument: 'after' });
+    const updated = await scoresCollection.findOneAndUpdate({ userName: userName },{ $inc: { clicks: 1 } },{ returnDocument: 'after' });
 
     //Update the Highscores in the database
     const newHighScores = await scoresCollection.find({}).sort({ clicks: -1 }).limit(10).toArray();
