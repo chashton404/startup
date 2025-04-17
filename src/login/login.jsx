@@ -4,60 +4,14 @@ import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./login.css";
 
-//we can also just make it so that text appears if we receive that the user's account does not exist
-function ErrorMessage({ isOpen }) {
-    if (!isOpen) {
-        return null;
-    }
-
-    return (
-        <div className="error-message">
-            <p style={{ color: 'red', fontSize: '14px' }}>
-                Username or password is incorrect. Please try again.
-            </p>
-        </div>
-    );
-}
-
-function AccountCreatedMessage({ isOpen }) {
-    if (!isOpen) {
-        return null;
-    }
-
-    return (
-        <div className="account-created-message">
-            <p style={{ color: 'blue', fontSize: '14px' }}>
-                Account created successfully. You can now log in.
-            </p>
-        </div>
-    );
-}
-
-function LoginSubtext({isOpen, message, color}) {
-    // This component is used to display a message below the login form.
-    if (!isOpen) {
-        return null;
-    }
-
-    return (
-        <div className="login-subtext">
-            <p style={{ color: color, fontSize: '14px' }}>
-                {message}
-            </p>
-        </div>
-    );
-}
-
-export function Login({setUsername}) {
-    const [usernameLocal, setUsernameLocal] = React.useState('');
+export function Login({setUserName}) {
+    const [userNameLocal, setUserNameLocal] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const [LoginSubtextOpen, setLoginSubtextOpen] = React.useState(false);
-    const [loginSubtextMessage, setLoginSubtextMessage] = React.useState('');
-    const [loginSubtextColor, setLoginSubtextColor] = React.useState('black')
     const navigate = useNavigate();
 
-    function handleUsernameChange(event) {
-        setUsernameLocal(event.target.value);
+    function handleUserNameChange(event) {
+        setUserNameLocal(event.target.value);
+        console.log(userNameLocal);
     }
 
     function handlePasswordChange(event) {
@@ -67,14 +21,14 @@ export function Login({setUsername}) {
     async function loginUser() {
         const response = await fetch(`api/auth/login`, {
             method: 'post',
-            body: JSON.stringify({ username: usernameLocal, password: password }),
+            body: JSON.stringify({ userName: userNameLocal, password: password }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
         if (response?.status === 200) {
-            localStorage.setItem('userName', usernameLocal);
-            setUsername(usernameLocal);
+            localStorage.setItem('userName', userNameLocal);
+            setUserName(userNameLocal);
             navigate('/landing');
         } else {
             toast.error('Username or password is incorrect.', {
@@ -91,7 +45,7 @@ export function Login({setUsername}) {
     async function createUser() {
         const response = await fetch(`api/auth/create`, {
             method: 'post',
-            body: JSON.stringify({username: usernameLocal, password: password}),
+            body: JSON.stringify({userName: userNameLocal, password: password}),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
@@ -137,7 +91,7 @@ export function Login({setUsername}) {
                         className="form-control"
                         id="floatingInput"
                         placeholder="Username"
-                        onChange={handleUsernameChange}
+                        onChange={handleUserNameChange}
                         style={{
                             marginBottom: '-1px',
                             borderBottomRightRadius: 0,
@@ -165,12 +119,12 @@ export function Login({setUsername}) {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <button type="button" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
+                        <button type="button" onClick={loginUser} className="btn signin-button-primary" style={{ width: '100%' }} disabled={!userNameLocal || !password}>
                             Login
                         </button>
                     </div>
                     <div className="col-md-6">
-                        <button type="button" onClick={createUser} className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!usernameLocal || !password}>
+                        <button type="button" onClick={createUser} className="btn signin-button-secondary" style={{ width: '100%' }} disabled={!userNameLocal || !password}>
                             Create Account
                         </button>
                     </div>
