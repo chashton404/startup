@@ -85,7 +85,7 @@ async function createUser(userName, password) {
     await userSkatesCollection.insertOne(skates);
     await userEquippedSkatesCollection.insertOne(equippedSkate);
 
-    return user; // you can return the user or just `true`
+    return user;
 }
 
 async function addHighScore(highScore) {
@@ -111,9 +111,31 @@ async function updateHighScores(newHighScores) {
     await highScoresCollection.replaceOne({ _id: 'currentHighScores' },{ _id: 'currentHighScores', scores: newHighScores },{upsert: true});
 }
 
-async function equipSkate(userName, skate) {
-    await userEquippedSkatesCollection.updateOne({ userName: userName },{ $set: { skate: skate } });
+async function equipUserSkate(username, index) {
+    const userSkatesDoc = await userSkatesCollection.findOne({ username });
+    const skates = userSkatesDoc.skates;
+
+    const newSkates = skates.map((skate, i) => ({
+        ...skate,
+        skateStatus: i === index ? 'equipped' : 'not equipped'
+    }));
+
+    const equippedSkate = newSkates[index];
+
+    await userSkatesCollection.updateOne(
+        { username },
+        { $set: { skates: newSkates } }
+    );
+
+    await userEquippedSkatesCollection.updateOne(
+        { username },
+        { $set: { skate: equippedSkate } },
+        { upsert: true }
+    );
+
+    return newSkates;
 }
+
 
 async function incrementScore(userName) {
     await scoresCollection.findOneAndUpdate({ userName: userName }, { $inc: { clicks: 1 } },{ returnDocument: 'after' });
@@ -141,6 +163,6 @@ module.exports = {
     addNewUserSkate,
     updateUser,
     updateUserSkates,
-    equipSkate,
+    equipUserSkate,
     incrementScore
 }

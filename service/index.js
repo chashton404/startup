@@ -42,11 +42,9 @@ apiRouter.post('/auth/create', async (req, res) => {
 // GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
     const user = await findUser('userName', req.body.userName);
-    console.log('User found:', user);
 
     if (user) {
         const passwordMatches = await bcrypt.compare(req.body.password, user.password);
-        console.log('Password matches?', passwordMatches);
 
         if (passwordMatches) {
             user.token = uuid.v4();
@@ -144,33 +142,11 @@ apiRouter.get('/getEquippedSkate', verifyAuth, async (req, res) => {
 
 // Function to Equip a skate
 apiRouter.post('/equipSkate', verifyAuth, async (req, res) => {
-    const user = await findUser('token', req.cookies[authCookieName]);
-    const userName = user.userName;
-    const index = req.body.index;
+    const user = await DB.getUserByToken(req.cookies[authCookieName]);
+    const newSkates = await DB.equipUserSkate(user.username, req.body.index);
+    res.send({ msg: 'Skate equipped successfully', skates: newSkates });
+});
 
-    if (!user) {
-        return res.status(401).send({ msg: 'User not found' });
-    }
-
-    // Get the User's Skates array from the database, and loop over it to set the correct skate to equipped
-    const userSkatesDoc = await DB.getUserSkates(userName);
-    const userSkates = userSkatesDoc.skates
-    const newSkates = userSkates.map((skate, i) => {
-        if (i === index) {
-            return {...skate, skateStatus: 'equipped'};
-        } else {
-            return {...skate, skateStatus: 'not equipped'};
-        }
-    });
-
-    // Update the user's skates in the database
-    await DB.updateUserSkates(userName, newSkates);
-
-    // Update the user's equipped skate in the database
-    await DB.equipSkate(userName, newSkates[index]);
-
-    res.send({ msg: 'Skate equipped successfully', skates: newSkates})  
-})
 
 //Function to Delete a skate
 apiRouter.post('/deleteSkate', verifyAuth, async (req, res) => {
@@ -243,7 +219,7 @@ apiRouter.get('/getUserScore', verifyAuth, async (req, res) => {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
 
-    const userDoc = await getUserScore(userName);
+    const userDoc = await DB.getUserScore(userName);
     if (!userDoc) {
         return res.status(404).send({ msg: 'User score not found' });
     }
